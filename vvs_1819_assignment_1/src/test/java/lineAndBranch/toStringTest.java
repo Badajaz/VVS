@@ -27,4 +27,18 @@ public class toStringTest {
 		assertEquals(result.equals("[1]"),true,"não imprime correctamente");
 		
 	}
+	
+	public void TestTreePrint() {
+		List<Integer> lista = new ArrayList <> ();
+		lista.add(1);
+		lista.add(2);
+		lista.add(3);
+		lista.add(4);
+		lista.add(5);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
+		String result = tree.toString();
+		System.out.println(result);
+		assertEquals(result.equals("[1:2345]"),true,"não imprime correctamente");
+		
+	}
 }
