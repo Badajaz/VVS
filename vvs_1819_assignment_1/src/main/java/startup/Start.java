@@ -8,7 +8,7 @@ public class Start {
 
 	public static void main(String[] args) {
 		
-		List<Integer> list = Arrays.asList(39, 59, 17, 85, 41, 45);  
+		/*List<Integer> list = Arrays.asList(39, 59, 17, 85, 41, 45);  
 
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 4);
 		System.out.println(tree.info());  
@@ -25,5 +25,13 @@ public class Start {
 		tree.insert(1);
 		System.out.println(tree.info());
 		// output eg: [1:[39][41][59][85]], size: 5, height: 2, nLeaves: 4
+		 * 
+		 * */
+		List<Integer> list = Arrays.asList(1,2,7,9);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 2);
+		tree.insert(3);
+		
+		
+		
 	}
 }

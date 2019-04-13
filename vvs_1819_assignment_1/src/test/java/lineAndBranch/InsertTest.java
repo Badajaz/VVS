@@ -54,24 +54,51 @@ public class InsertTest {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,2);
 		tree.insert(0);
 		int value = tree.toList().get(0);
-		assertEquals(value,0,"nao fez swap dos valores quando a root e maior que o elemento inserido");
+		assertEquals(value,0,"nao inseriu um menor valor numa arvore vazia");
 
 	}
 
 
-	/*@Test
+	@Test
 	public void testInsertIfSpaceAvailable() {
-		
+
 		List<Integer> lista = new ArrayList<>();
 		lista.add(1);
 		lista.add(2);
-		lista.add(3);
+		lista.add(4);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
-		tree.insert(4);
+		tree.insert(3);
 		int value = tree.toList().get(3);
-		assertEquals(value,4,"nao fez swap dos valores quando a root e maior que o elemento inserido");
+		assertEquals(value,4,"nao havia lugar para inserir um elemento");
 
-	}*/
+	}
+
+	@Test
+	public void testPlaceBelowLastChild() {
+		List<Integer> lista = new ArrayList<>();
+		lista.add(1);
+		lista.add(2);
+		lista.add(7);
+		lista.add(9);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
+		tree.insert(3);
+		int value = tree.toList().get(2);
+		assertEquals(value,3,"nao havia lugar para inserir um elemento");
+	}
+	
+	@Test
+	public void test() {
+		List<Integer> lista = new ArrayList<>();
+		lista.add(1);
+		lista.add(10);
+		lista.add(20);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
+		tree.insert(5);
+		int value = tree.toList().get(1);
+		System.out.println(value);
+		assertEquals(value,5,"nao havia lugar para inserir um elemento");
+	
+	}
 
 
 
