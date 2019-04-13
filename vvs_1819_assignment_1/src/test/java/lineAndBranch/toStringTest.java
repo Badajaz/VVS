@@ -12,7 +12,14 @@ import sut.ArrayNTree;
 public class toStringTest {
 
 	@Test
-	public void TestTreeContainsElement() {
+	public void TestEmptyString() {
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(0);
+		String result = tree.toString();
+		assertEquals(result,"[]","não imprime correctamente");
+	}
+	
+	@Test 
+	public void TestLeafTreePrint() {
 		List<Integer> lista = new ArrayList <> ();
 		lista.add(1);
 		lista.add(2);
@@ -20,21 +27,8 @@ public class toStringTest {
 		lista.add(4);
 		lista.add(5);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
-		boolean result = tree.contains(2);
-		assertEquals(result,true,"contains a funcionar mal");
-	}
-	
-	@Test 
-	public void TestEmptyTree() {
-		ArrayNTree<Integer> tree = new ArrayNTree<>(0);
-		boolean result = tree.contains(458);
-		assertEquals(result, false, "contain diz que tem algo numa arvore vazia");
-	}
-	
-	@Test
-	public void TestElementAtRoot() {
-		ArrayNTree<Integer> tree = new ArrayNTree<>(1,0);
-		boolean result = tree.contains(1);
-		assertEquals(result,true, "diz que nao contem o 1 apesar de la estar");
+		String result = tree.toString();
+		assertEquals(result,"[1]","não imprime correctamente");
+		
 	}
 }

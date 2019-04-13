@@ -25,9 +25,7 @@ public class CloneTest {
 		List<Integer> list1 = tree.toList();
 		boolean check = true;
 			for(int i=1; i<lista.size(); i++){
-				if (lista.get(i) != list1.get(i)) {
-					check = false;
-				}
+					assertEquals(lista.get(i) != list1.get(i),false, "os elementos sao iguais");
 			}
 		assertEquals((list1.size() != lista.size()),false, "tamanhos diferentes");
 		assertEquals(check,true, "os elementos sao iguais");
