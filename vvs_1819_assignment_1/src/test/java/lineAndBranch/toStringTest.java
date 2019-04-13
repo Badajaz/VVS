@@ -15,7 +15,7 @@ public class toStringTest {
 	public void TestEmptyString() {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(0);
 		String result = tree.toString();
-		assertEquals(result,"[]","não imprime correctamente");
+		assertEquals(result,"[]","não imprime correctamente arvore vazia");
 	}
 	
 	@Test 
@@ -24,7 +24,7 @@ public class toStringTest {
 		lista.add(1);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
 		String result = tree.toString();
-		assertEquals(result.equals("[1]"),true,"não imprime correctamente");
+		assertEquals(result.equals("[1]"),true,"não imprime correctamente uma folha");
 		
 	}
 	
@@ -37,8 +37,7 @@ public class toStringTest {
 		lista.add(5);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
 		String result = tree.toString();
-		System.out.println(result);
-		assertEquals(result.equals("[1:2345]"),true,"não imprime correctamente");
+		assertEquals(result.equals("[1:2345]"),true,"não imprime correctamente toda a arvore");
 		
 	}
 }
