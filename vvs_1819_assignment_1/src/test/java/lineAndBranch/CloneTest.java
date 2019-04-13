@@ -24,16 +24,13 @@ public class CloneTest {
 		ArrayNTree<Integer> result = tree.clone();
 		List<Integer> list1 = tree.toList();
 		boolean check = true;
-		if (list1.size() != lista.size()) {
-			check = false;
-		}
-		else {
 			for(int i=1; i<lista.size(); i++){
 				if (lista.get(i) != list1.get(i)) {
 					check = false;
 				}
 			}
-		}
-		assertEquals(result.equals(tree),check,"as árvores sao iguais");
+		assertEquals((list1.size() != lista.size()),false, "tamanhos diferentes");
+		assertEquals(check,true, "os elementos sao iguais");
+		assertEquals(result.equals(tree),true,"as árvores sao iguais");
 	}	
 }
