@@ -3,6 +3,7 @@ package lineAndBranch;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -100,19 +101,15 @@ public class InsertTest {
 	}
 	
 	
-	/*@Test
+	@Test
 	public void testIfNodeCapacityIsFullAndElemLagerThanAll() {
-		List<Integer> lista = new ArrayList<>();
-		lista.add(1);
-		lista.add(10);
-		lista.add(20);
-		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
+		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
+		tree.delete(30);
 		tree.insert(30);
-		int value = tree.toList().get(3);
-		System.out.println(value);
-		assertEquals(value,30,"nao havia lugar para inserir um elemento");
+		//assertEquals(value,30,"nao havia lugar para inserir um elemento");
 	
-	}*/
+	}
 	
 	
 	
