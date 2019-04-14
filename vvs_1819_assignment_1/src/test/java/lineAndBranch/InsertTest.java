@@ -95,10 +95,27 @@ public class InsertTest {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(5);
 		int value = tree.toList().get(1);
-		System.out.println(value);
 		assertEquals(value,5,"nao havia lugar para inserir um elemento");
 	
 	}
+	
+	
+	/*@Test
+	public void testIfNodeCapacityIsFullAndElemLagerThanAll() {
+		List<Integer> lista = new ArrayList<>();
+		lista.add(1);
+		lista.add(10);
+		lista.add(20);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
+		tree.insert(30);
+		int value = tree.toList().get(3);
+		System.out.println(value);
+		assertEquals(value,30,"nao havia lugar para inserir um elemento");
+	
+	}*/
+	
+	
+	
 
 
 

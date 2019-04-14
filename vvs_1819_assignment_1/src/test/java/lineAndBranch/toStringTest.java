@@ -28,6 +28,7 @@ public class toStringTest {
 		
 	}
 	
+	@Test
 	public void TestTreePrint() {
 		List<Integer> lista = new ArrayList <> ();
 		lista.add(1);
@@ -37,7 +38,8 @@ public class toStringTest {
 		lista.add(5);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
 		String result = tree.toString();
-		assertEquals(result.equals("[1:2345]"),true,"não imprime correctamente toda a arvore");
+		System.out.println(result);
+		assertEquals(result.equals("[1:[2][3][4][5]]"),true,"não imprime correctamente toda a arvore");
 		
 	}
 }
