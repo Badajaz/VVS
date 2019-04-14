@@ -2,6 +2,9 @@ package lineAndBranch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import sut.ArrayNTree;
@@ -15,4 +18,7 @@ public class IsLeafTest {
 		assertEquals(result,false,"Falhou como folha");
 		
 	}
+
+ //colocar no relatório que é uma condição impossível.
+
 }

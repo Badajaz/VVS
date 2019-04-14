@@ -21,7 +21,8 @@ public class InfoTest {
 		lista.add(5);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
 		String result = tree.info();
-		String try1 = ", size: " + tree.size() + ", height: " + tree.height() + ", nLeaves: " + tree.countLeaves();
+		System.out.println(result);
+		String try1 = tree.toString()+", size: " + tree.size() + ", height: " + tree.height() + ", nLeaves: " + tree.countLeaves();
 		assertEquals(result.equals(try1),true,"não imprime correctamente a informaçao");
 	}
 	
