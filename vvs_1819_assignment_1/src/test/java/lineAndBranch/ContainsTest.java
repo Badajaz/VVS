@@ -37,4 +37,36 @@ public class ContainsTest {
 		boolean result = tree.contains(1);
 		assertEquals(result,true, "diz que nao contem o 1 apesar de la estar");
 	}
+	
+	
+	@Test
+	public void TestTreeDoesNotContainsElement() {
+		List<Integer> lista = new ArrayList <> ();
+		lista.add(2);
+		lista.add(3);
+		lista.add(4);
+		lista.add(5);
+		lista.add(6);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
+		boolean result = tree.contains(1);
+		assertEquals(result,false,"contains a funcionar mal");
+	}
+	
+	@Test
+	public void TestTreeRecursive() {
+		List<Integer> lista = new ArrayList <> ();
+		lista.add(2);
+		lista.add(3);
+		lista.add(4);
+		lista.add(5);
+		lista.add(6);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,1);
+		boolean result = tree.contains(6);
+		assertEquals(result,true,"contains a funcionar mal");
+	}
+	
+	
+	
+	
+	
 }

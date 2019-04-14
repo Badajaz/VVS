@@ -15,8 +15,16 @@ public class DeleteTest {
 	public void testEmptyTree() {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(1);
 		tree.delete(0);
-		assertEquals(tree.size(),0,"apaga mal arvore vazia");
+		assertEquals(tree.isEmpty(),true,"apaga mal arvore vazia");
 	}
+	
+	@Test
+	public void testBigRoot() {
+		ArrayNTree<Integer> tree = new ArrayNTree<>(100,1);
+		tree.delete(0);
+		assertEquals(tree.size(),1,"root apagada");
+	}
+	
 	
 	@Test
 	public void testLeafElement() {
