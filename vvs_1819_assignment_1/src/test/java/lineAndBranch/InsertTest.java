@@ -107,9 +107,24 @@ public class InsertTest {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(30);
 		tree.insert(30);
-		//assertEquals(value,30,"nao havia lugar para inserir um elemento");
+		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
 	
 	}
+	
+	
+	@Test
+	public void testLastCaseInsert() {
+		List<Integer> list = Arrays.asList(10,20,30);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
+		System.out.println(tree);
+		tree.insert(15);
+		System.out.println(tree);
+		
+		
+		
+	}
+	
+	
 	
 	
 	

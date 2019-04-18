@@ -1,6 +1,6 @@
 package lineAndBranch;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +20,7 @@ public class CloneTest {
 		lista.add(4);
 		lista.add(5);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
-		
 		ArrayNTree<Integer> result = tree.clone();
-		List<Integer> list1 = tree.toList();
-		boolean check = true;
-			for(int i = 0; i < lista.size(); i++){
-					assertEquals(lista.get(i) != list1.get(i),false, "os elementos sao iguais");
-			}
-		assertEquals(list1.size() != lista.size(),false, "tamanhos diferentes");
-		assertEquals(check,true, "os elementos sao iguais");
-		assertEquals(result.equals(tree),true,"as árvores sao iguais");
+		assertTrue(result.equals(tree),"as árvores sao iguais");
 	}	
 }

@@ -1,6 +1,7 @@
 package lineAndBranch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +37,10 @@ public class toStringTest {
 		lista.add(3);
 		lista.add(4);
 		lista.add(5);
-		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,2);
 		String result = tree.toString();
 		System.out.println(result);
-		assertEquals(result.equals("[1:[2][3][4][5]]"),true,"não imprime correctamente toda a arvore");
+		assertTrue(result.equals("[1:[2][3:[4][5]]]"),"não imprime correctamente toda a arvore");
 		
 	}
 }

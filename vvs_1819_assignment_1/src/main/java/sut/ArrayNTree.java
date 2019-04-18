@@ -63,9 +63,12 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	}
 
     /////////////////////////////////////
-
+	//colocar no relatório que apanhamos um erro  quando é uma árvore vazia(devolve 1 e devia devolver 0)
 	public int size() {
 		int sum=0;
+		if (empty) {
+			return 0;
+		}
 		for(NTree<T> brt : children)
 			if (brt!=null)
 			    sum += brt.size();
@@ -316,11 +319,13 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	}
 	
 	/////////////////////////////////////
-	
+	// corrigido para o caso em que o elemento é null
 	public List<T> toList() {
 		List<T> list = new LinkedList<>();
 		for(T elem : this)
-			list.add(elem);
+			if (elem != null) {
+				list.add(elem);
+			}
         return list;  // already sorted		
 	}
 	

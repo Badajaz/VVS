@@ -28,12 +28,11 @@ public class Start {
 		 * 
 		 * */
 		
-		List<Integer> list = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+		List<Integer> list = Arrays.asList(10,20,30);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 2);
-		
-		System.out.println(tree);
-		tree.insert(-3);
-		System.out.println(tree);
+		//System.out.println(tree);
+		tree.insert(50);
+		//System.out.println(tree);
 		
 		
 		

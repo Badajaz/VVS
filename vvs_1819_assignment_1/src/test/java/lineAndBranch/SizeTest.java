@@ -24,4 +24,14 @@ public class SizeTest {
 		assertEquals(result,5,"tamanho errado");
 		
 	}
+	
+	@Test
+	public void testEmptyTree() {
+		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(0);
+		int result = tree.size();
+		assertEquals(result,0,"tamanho errado");
+	}
+	
+	
+	
 }
