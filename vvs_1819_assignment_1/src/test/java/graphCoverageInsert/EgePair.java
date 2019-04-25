@@ -1,4 +1,4 @@
-package graphCoverageInsert;
+	package graphCoverageInsert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,18 +12,25 @@ import sut.ArrayNTree;
 
 public class EgePair {
 
+		/*
+		 * 
+		 * 
+		 * Falta colocar o caminho [6,7,9]
+		 * 
+		 * 
+		 * */
 	
-
+	
+	//[1],[2],[1,2]
 	@Test
 	public void testInsertEmptyTree () {
-
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(2);
 		tree.insert(1);
 		assertEquals(tree.size(),1,"tamanho errado");
 		assertEquals(tree.contains(1),true,"elemento errado");
 	}
 	
-	
+	//[5,7][3,5,7][5,7,8]
 	@Test
 	public void testInsertIsLeaf() {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(1,2);
@@ -32,7 +39,7 @@ public class EgePair {
 		assertEquals(tree.contains(2),true,"elemento errado");
 	}
 
-
+	//[3][4][1,3][3,4][1,3,4]
 	@Test
 	public void testInsertRepetitions() {
 
@@ -42,7 +49,8 @@ public class EgePair {
 		assertEquals(tree.size(),1,"tamanho errado");		
 
 	}
-
+	
+	//[5][6][7][8][3,5][5,6][6,7][7,8][1,3,5][3,5,6][5,6,7][6,7,8]
 	@Test
 	public void testSwapElementsAtRoot() {
 
@@ -52,8 +60,10 @@ public class EgePair {
 		assertEquals(value,0,"nao fez swap dos valores quando a root e maior que o elemento inserido");
 
 	}
-
-
+	
+	
+	//[9] [10] [11] [12] [13] [7,9] [9,10] [9,11] [11,12] [12,13] [7,9,10] [7,9,11] [9,11,12]
+	//[11,12,13]
 	@Test
 	public void testInsertLowerElementInNonEmptyTree() {
 
@@ -66,13 +76,11 @@ public class EgePair {
 		assertEquals(value,2,"nao inseriu um menor valor numa arvore vazia");
 
 	}
-	
 
 
-	
-
+	//[15] [16] [11,15] [15,16] [9,11,12] [9,11,15] [11,15,16] [11,15,17]
 	@Test
-	public void test() {
+	public void testNewLevel() {
 		List<Integer> lista = new ArrayList<>();
 		lista.add(1);
 		lista.add(10);
@@ -83,7 +91,9 @@ public class EgePair {
 		assertEquals(value,5,"nao havia lugar para inserir um elemento");
 	
 	}
+	
 
+	//[17] [18] [19] [20] [15,17] [17,18] [18,19] [18,20] [15,16,17] [17,18,19] [17,18,20]
 	@Test
 	public void testIfNodeCapacityIsFullAndElemLagerThanAll() {
 		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
@@ -91,21 +101,20 @@ public class EgePair {
 		tree.delete(30);
 		tree.insert(30);
 		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
-	}
+	}	
+
 	
+	//[11,12,14]
 	@Test
 	public void testCapacityNotFull() {
 		List<Integer> list = Arrays.asList(10,17,20,21,23,25,26,40,50,35);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
-		System.out.println(tree);
 		tree.delete(20);
-		System.out.println(tree);
 		tree.insert(22);
-		System.out.println(tree);
 		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
 	}
 	
-	/*
+	
 	
 	@Test
 	public void testLastCaseInsert() {
@@ -114,6 +123,7 @@ public class EgePair {
 		tree.insert(15);
 		assertEquals(tree.contains(15),true,"nao havia lugar para inserir um elemento");
 	}
+	
 	
 	@Test
 	public void testInsertNotFullLevelWithElementlargerThanAllChildrenButNotBiggerThanPreviousChildren() {
@@ -126,7 +136,7 @@ public class EgePair {
 	
 	
 	
-
+	
 	@Test
 	public void testInsertIfSpaceAvailable() {
 
@@ -154,7 +164,7 @@ public class EgePair {
 		assertEquals(value,3,"nao havia lugar para inserir um elemento");
 	}
 
-	*/
+	
 	
 	
 	

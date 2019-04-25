@@ -146,60 +146,61 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 
 	public void insert(T elem) {
 		
-		if(isEmpty()) {
-			data=elem;
-			empty=false;
-			return;
+		if(isEmpty()) { //node 1
+			data=elem; //Node 2
+			empty=false; 
+			return; 
 		}
 		
-		if (contains(elem)) // will not insert repetitions
-			return;
+		if (contains(elem)) // will not insert repetitions //node 3
+			return; //Node 4
 		
 		// if elem<data, elem should be at root, and we re-insert data
-		if (data.compareTo(elem)>0) {
-			T tmp = data; data = elem; elem = tmp; // swap values
+		if (data.compareTo(elem)>0) { //Node 5 
+			T tmp = data; data = elem; elem = tmp; // swap values // Node 6
 		}
 		
-		if(isLeaf()) {
-			insertAt(elem, 0);	
+		if(isLeaf()) { //Node 7
+			insertAt(elem, 0);	//Node 8
 			return;
 		}
 		
-		int position = proposePosition(elem);
+		int position = proposePosition(elem);//Node 9
 		
 		if (position==-1) {
 			// element 'elem' is smaller than all children
 			// then we place it at index 0, and insert the previous children[0] below 'elem'
-			T previousValue = children[0].data;
+			T previousValue = children[0].data;//Node 10
 			children[0].data = elem;
 			this.insert(previousValue);
 		} 
 		
-		else if (nChildren<capacity && children[position] == null) {
+		else if (nChildren<capacity && children[position] == null) { //Node 11
 			// there's space available, and elem > all children
-			if (elem.compareTo(children[position-1].max())>0)
+			if (elem.compareTo(children[position-1].max())>0) //Node 12
 				// if elem is also larger than all children of the last child, place it here 
-				insertAt(elem, position);
-			else
+				insertAt(elem, position); //Node 13
+			else 
 				// otherwise, place it below last child
-				children[position-1].insert(elem);
+				children[position-1].insert(elem); //Node 14
 		}
 		
-		else if (nChildren<capacity && elem.compareTo(children[position].max())>0) {
+		else if (nChildren<capacity && elem.compareTo(children[position].max())>0) { //Node 15
 			// element can be placed after an existing node N (there's space and it's larger
 			// than all children of N) but we must shift all those on the right
-			insertAt(elem, position+1);
+			insertAt(elem, position+1); //Node 16
 		}
 		
-		else if (nChildren==capacity || elem.compareTo(children[position].max())<0) {
+		else if (nChildren==capacity || elem.compareTo(children[position].max())<0) { //Node 17
 			// if the node's capacity is full, and elem is larger than all children
 			// place it below the last child
-			if (position==capacity)
-				children[position-1].insert(elem);
+			if (position==capacity) //Node 18
+				children[position-1].insert(elem); //Node 19
 			else
 				// otherwise, it must go under the proposed child's position
-				children[position].insert(elem);
+				children[position].insert(elem); //Node 20
 		}
+		
 	}
 
     /////////////////////////////////////
@@ -208,34 +209,35 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		
 		// the minimum value is at the root, if something smaller
 		// appears, the tree does not contain it
-		if(isEmpty() || data.compareTo(elem)>0)
-			return;
+	
+		if(isEmpty() || data.compareTo(elem)>0)	//node 1
+			return; //node 2
 		
-		if(isLeaf()) {
+		if(isLeaf()) { //node 3
 			empty = data.compareTo(elem)==0;
-			return;
+			return; //node 4
 		}
 		
 		// is elem in the root?
-		if (data.compareTo(elem)==0) {
+		if (data.compareTo(elem)==0) { //node 5
 			// we need to replace it with the lowest child (children[0])
 			// and repeat it (to avoid duplicates) until we reach a leaf
-			data = children[0].data;
+			data = children[0].data; //node 6
 			children[0].delete(data);
 		} else {
-			int position = proposePosition(elem);
+			int position = proposePosition(elem); //node 7
 			// if elem < all children, the element does not exist in the tree
 			if (position<0)
-				return;
+				return;//node 8
 			// if elem>all children: need to look below last child
-			if(position==nChildren)  
-				position--;
-			children[position].delete(elem);			
+			if(position==nChildren) //node 9 
+				position--; //node 10
+			children[position].delete(elem); //node 11			
 		}
 		// if we are at the tree's bottom, the last deletion
 		// will produce an empty tree, so we might need to compact the array
 		// to eliminate these empty nodes
-		compact(children);		
+		compact(children); //node 12		
 	}
 
     /////////////////////////////////////
