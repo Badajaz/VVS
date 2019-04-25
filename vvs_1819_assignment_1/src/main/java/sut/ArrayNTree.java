@@ -225,7 +225,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			data = children[0].data; //node 6
 			children[0].delete(data);
 		} else {
-			int position = proposePosition(elem); //node 7
+			 int position = proposePosition(elem); //node 7
 			// if elem < all children, the element does not exist in the tree
 			if (position<0)
 				return;//node 8
@@ -268,21 +268,21 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	// returns the index of the largest of all the values < elem
 	// if the element is the smallest, it returns -1
 	private int proposePosition(T elem) {
-		int index = 0;
-		for(int i=0; i<capacity; i++) {
-			if (children[i] == null || children[i].data.compareTo(elem)==0) 
+		int index = 0; //Node 1
+		for(int i=0; i<capacity; i++) { //Node 2
+			if (children[i] == null || children[i].data.compareTo(elem)==0) //Node 4
 				// found an empty slot or the element, return current index
 				break;
-			if (children[i].data.compareTo(elem)>0) {
+			if (children[i].data.compareTo(elem)>0) { //Node 5
 				// element should not be place here or ahead, go back one position, and end search
 				index--;
 				break;
 			}
-			if (children[i].data.compareTo(elem)<0)  
+			if (children[i].data.compareTo(elem)<0)  //Node 6
 				// this child is still smaller, check next one 
 				index++;
 		}
-		return index;
+		return index; //Node 3
 	}
 
 	/////////////////////////////////////

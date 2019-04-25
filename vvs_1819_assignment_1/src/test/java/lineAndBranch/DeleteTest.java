@@ -26,6 +26,12 @@ public class DeleteTest {
 	}
 	
 	
+	/*
+	 * Coupling du-pairs (last-def -> first-use):
+	(delete, elem, node 1) ->  (proposePosition, elem, node 4)
+	(proposePosition, index, node 6) -> (delete, position, node 7)
+	 */
+	
 	@Test
 	public void testLeafElement() {
 		List<Integer> lista = new ArrayList <> ();
@@ -82,7 +88,9 @@ public class DeleteTest {
 	}
 	
 	
-	
+	//Coupling du-pairs (last-def -> first-use):
+	//(proposePosition, index, node 5) -> (delete, position, node 7)
+
 	@Test
 	public void testNonExistantElementMiddle() {
 		List<Integer> lista = new ArrayList <> ();
