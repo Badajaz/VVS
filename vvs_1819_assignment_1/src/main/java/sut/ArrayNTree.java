@@ -278,10 +278,15 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 				index--;
 				break;
 			}
-			if (children[i].data.compareTo(elem)<0)  //Node 6
-				// this child is still smaller, check next one 
+			if (children[i].data.compareTo(elem)<0) {
+				//Node 6
 				index++;
+				System.out.println(index);
+			}
+				// this child is still smaller, check next one 
+				
 		}
+		
 		return index; //Node 3
 	}
 

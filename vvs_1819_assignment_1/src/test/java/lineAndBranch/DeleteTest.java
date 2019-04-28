@@ -11,6 +11,14 @@ import sut.ArrayNTree;
 
 public class DeleteTest {
 
+	/*
+	 * 
+	 * 
+	 * teste para o purposePosition que apenas retorna 0 é infeasible
+	 * 
+	 * 
+	 */
+	
 	@Test
 	public void testEmptyTree() {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(1);
@@ -102,4 +110,8 @@ public class DeleteTest {
 		tree.delete(2);
 		assertEquals(tree.size(),4,"apaga um elemento que nao existe");
 	}
+	
+	
+	
+	
 }
