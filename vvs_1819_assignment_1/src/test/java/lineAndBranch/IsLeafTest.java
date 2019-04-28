@@ -1,9 +1,6 @@
 package lineAndBranch;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +11,7 @@ public class IsLeafTest {
 	@Test
 	public void testLeaf () {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(0);
-		boolean result = tree.isLeaf();
-		assertEquals(result,false,"Falhou como folha");
+		assertFalse(tree.isLeaf(),"Falhou como folha");
 		
 	}
 

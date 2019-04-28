@@ -1,8 +1,8 @@
 package lineAndBranch;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -13,17 +13,11 @@ public class InfoTest {
 
 	@Test
 	public void TestInfo() {
-		List<Integer> lista = new ArrayList <> ();
-		lista.add(1);
-		lista.add(2);
-		lista.add(3);
-		lista.add(4);
-		lista.add(5);
+		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,5);
 		String result = tree.info();
-		System.out.println(result);
 		String try1 = tree.toString()+", size: " + tree.size() + ", height: " + tree.height() + ", nLeaves: " + tree.countLeaves();
-		assertEquals(result.equals(try1),true,"não imprime correctamente a informaçao");
+		assertTrue(result.equals(try1),"não imprime correctamente a informaçao");
 	}
 	
 	
