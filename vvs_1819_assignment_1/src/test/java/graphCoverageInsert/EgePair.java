@@ -121,6 +121,15 @@ public class EgePair {
 		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
 	}
 	
+	//TR(EPC) = [6,7,9]
+	@Test
+	public void testAtRoot ()  {
+		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
+		System.out.println(tree);
+		
+	}
+	
 	
 	
 	@Test
