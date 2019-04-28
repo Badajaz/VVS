@@ -195,11 +195,12 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			// if the node's capacity is full, and elem is larger than all children
 			// place it below the last child
 			if (position==capacity) //Node 18
-				children[position-1].insert(elem); //Node 19
+				children[position-1].insert(elem); //Node 20
 			else
 				// otherwise, it must go under the proposed child's position
-				children[position].insert(elem); //Node 20
+				children[position].insert(elem); //Node 21
 		}
+		//Node 19
 		
 	}
 

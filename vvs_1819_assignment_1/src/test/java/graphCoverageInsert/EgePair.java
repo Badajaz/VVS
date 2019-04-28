@@ -89,7 +89,6 @@ public class EgePair {
 		tree.insert(2);
 		int value = tree.toList().get(1);
 		assertEquals(value,2,"nao inseriu um menor valor numa arvore vazia");
-
 	}
 
 	/*
@@ -112,8 +111,8 @@ public class EgePair {
 	/*
 	 * 
 	 * 
-	 * Covers EPC = [17] [18] [19] [20] [15,17] [17,18] [18,19] [18,20] [15,16,17] [17,18,19] [17,18,20]
-	 * Covers PPC = [1,3,5,7,9,11,15,17,18,20],[1,3,5,7,9,11,15,17,18,19]
+	 * Covers EPC = [17] [18] [19] [20] [21] [15,17] [17,18] [18,20] [18,21] [15,16,17] [17,18,20] [17,18,21]
+	 * Covers PPC = [1,3,5,7,9,11,15,17,18,21],[1,3,5,7,9,11,15,17,18,20]
 	 * 
 	 */
 
@@ -146,15 +145,16 @@ public class EgePair {
 	/*
 	 * 
 	 * Covers EPC = [6,7,9]
+	 * Covers PPC = [1,3,5,6,7,9,10]
 	 * 
 	 */
+	
 	@Test
 	public void testAtRoot ()  {
 		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.insert(9);
 		assertTrue(tree.contains(9), "nao esta na root");
-		
 	}
 	
 	
