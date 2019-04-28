@@ -1,6 +1,7 @@
 	package graphCoverageInsert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,15 +13,8 @@ import sut.ArrayNTree;
 
 public class EgePair {
 
-		/*
-		 * 
-		 * 
-		 * Falta colocar o caminho [6,7,9]
-		 * 
-		 * 
-		 * */
 	
-	
+	/*
 	//TR(EPC)=[1],[2],[1,2]
 	//TR(PPC)=[1,2]
 	@Test
@@ -118,20 +112,21 @@ public class EgePair {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(20);
 		tree.insert(22);
-		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
+		assertEquals(tree.contains(22),true,"nao havia lugar para inserir um elemento");
 	}
-	
+	*/
 	//TR(EPC) = [6,7,9]
 	@Test
 	public void testAtRoot ()  {
 		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
-		System.out.println(tree);
+		tree.insert(9);
+		assertTrue(tree.contains(9), "nao esta na root");
 		
 	}
 	
 	
-	
+	/*
 	@Test
 	public void testLastCaseInsert() {
 		List<Integer> list = Arrays.asList(10,20,30);
@@ -180,7 +175,7 @@ public class EgePair {
 		assertEquals(value,3,"nao havia lugar para inserir um elemento");
 	}
 
-	
+	*/
 	
 	
 	
