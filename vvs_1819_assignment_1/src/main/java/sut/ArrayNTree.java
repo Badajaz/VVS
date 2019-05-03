@@ -244,15 +244,16 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
     /////////////////////////////////////
 
 	// find an eventual single empty tree, and shift all next elements to the left
-	private void compact(ArrayNTree<T>[] children) {
-		for(int i=0; i<nChildren; i++)
-			if (children[i].isEmpty()) {
-				for(int j=i+1; j<nChildren; j++)
-					children[j-1] = children[j];
-				children[nChildren-1] = null;
+	private void compact(ArrayNTree<T>[] children) {//Node 1
+		for(int i=0; i<nChildren; i++)//Node 2
+			if (children[i].isEmpty()) {//Node 4
+				for(int j=i+1; j<nChildren; j++)//Node 5
+					children[j-1] = children[j];//Node 6
+				children[nChildren-1] = null;//Node 7
 				nChildren--;
 				break;
 			}
+		//Node 3
 	}
 
 	// shift all indexes i>position one index to the right

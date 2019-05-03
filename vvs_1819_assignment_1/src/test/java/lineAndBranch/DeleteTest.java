@@ -40,6 +40,7 @@ public class DeleteTest {
 	 * Coupling du-pairs (last-def -> first-use):
 	 * (delete, elem, node 1) ->  (proposePosition, elem, node 4)
 	 * (proposePosition, index, node 6) -> (delete, position, node 7)
+	 * (delete, children, node 11) ->(compact, children node 4)
 	 */
 
 	@Test
@@ -50,7 +51,12 @@ public class DeleteTest {
 		assertEquals(tree.size(),4,"nao apaga o elemento na folha");
 		assertFalse(tree.contains(5), "nao apaga o elemento correto");
 	}
-
+	
+	
+	/*
+	 * Coupling du-pairs (last-def -> first-use):
+	 * (delete, children, node 6) ->(compact, children node 4)
+	 */
 	@Test
 	public void testRootDeletion() {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
@@ -76,7 +82,7 @@ public class DeleteTest {
 		tree.delete(8);
 		assertEquals(tree.size(),5,"apaga um elemento que nao existe");
 	}
-
+	
 	/*
 	 * Coupling du-pairs (last-def -> first-use):
 	 * (proposePosition, index, node 5) -> (delete, position, node 7)
