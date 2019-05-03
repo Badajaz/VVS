@@ -18,7 +18,7 @@ public class baseChoice {
 	 * 
 	 * Covers BCC = [~et1,~et2,~nt2,partial]
 	 */
-
+	
 	@Test
 	public void testPartialEquals () {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);

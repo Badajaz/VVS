@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import sut.ArrayNTree;
 
-public class EgePair {
+public class EdgePair {
 
 	/*
 	 * Covers EPC = [1],[2],[1,2]
@@ -148,48 +148,6 @@ public class EgePair {
 		tree.insert(9);
 		assertTrue(tree.contains(9), "nao esta na root");
 	}
-	
-	
-	
-	@Test
-	public void testLastCaseInsert() {
-		List<Integer> list = Arrays.asList(10,20,30);
-		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
-		tree.insert(15);
-		assertTrue(tree.contains(15),"nao havia lugar para inserir um elemento");
-	}
-	
-	
-	@Test
-	public void testInsertNotFullLevelWithElementlargerThanAllChildrenButNotBiggerThanPreviousChildren() {
-		List<Integer> list = Arrays.asList(10,20,30,50,55,57,58,25,27,28);
-		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
-		tree.delete(30);
-		tree.insert(51);
-		assertTrue(tree.contains(51),"nao havia lugar para inserir um elemento");
-	}
-	
-	
-	
-	
-	@Test
-	public void testInsertIfSpaceAvailable() {
-		List<Integer> lista = Arrays.asList(1,2,4);
-		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
-		tree.insert(3);
-		int value = tree.toList().get(3);
-		assertEquals(value,4,"nao havia lugar para inserir um elemento");
-	}
-
-	@Test
-	public void testPlaceBelowLastChild() {
-		List<Integer> lista = Arrays.asList(1,2,7,9);
-		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
-		tree.insert(3);
-		int value = tree.toList().get(2);
-		assertEquals(value,3,"nao havia lugar para inserir um elemento");
-	}
-
 	
 	
 	
