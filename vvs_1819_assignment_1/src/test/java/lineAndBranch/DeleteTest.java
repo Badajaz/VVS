@@ -92,11 +92,18 @@ public class DeleteTest {
 	public void testNonExistantElementMiddle() {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,3);
-		System.out.println(tree);
 		tree.delete(2);
-		System.out.println(tree);
 		assertEquals(tree.size(),4,"apaga um elemento que nao existe");
 	}
+	
+	@Test
+	public void testLowerElementThenAllTree() {
+		List<Integer> lista = Arrays.asList(1,3,4,5);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,3);
+		tree.delete(2);
+		assertEquals(tree.size(),4,"apaga um elemento que nao existe");
+	}
+	
 
 
 }

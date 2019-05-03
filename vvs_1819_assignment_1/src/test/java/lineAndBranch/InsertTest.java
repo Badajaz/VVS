@@ -74,7 +74,7 @@ public class InsertTest {
 	}
 	
 	@Test
-	public void test() {
+	public void testInsertSmallerThanAllChildren() {
 		
 		List<Integer> lista = Arrays.asList(1,10,20);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
@@ -111,8 +111,14 @@ public class InsertTest {
 		assertTrue(tree.contains(51),"nao havia lugar para inserir um elemento");
 	}
 	
-	
-	
+	@Test
+	public void test2() {
+		List<Integer> list = Arrays.asList(2,7,11,15,25,30,17,18,19);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 5);
+		tree.delete(30);
+		tree.insert(16);
+		assertTrue(tree.contains(16),"nao havia lugar para inserir um elemento");
+	}
 	
 
 
