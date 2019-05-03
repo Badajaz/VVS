@@ -6,27 +6,29 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import org.junit.runner.RunWith;
+
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
+import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 
 import sut.ArrayNTree;
-
+@RunWith(JUnitQuickcheck.class)
 public class Properties {
 
-	
-	
+
 	@Property
 	public void shuffleTree(@From(TreeGenerator.class)@InRange(min="0",max= "100") ArrayNTree<Integer> tree) {
-		
+
 		List<Integer> shuffle = tree.toList() ;
 		Collections.shuffle(shuffle);
-	
+
 		ArrayNTree<Integer> secondTree = new ArrayNTree<Integer>(shuffle,5);
 		assertTrue(tree.equals(secondTree));
-		
+
 	}
-	
+
 	@Property
 	public void deletedTree(@From(TreeGenerator.class)@InRange(min="0",max= "100") ArrayNTree<Integer> tree) {
 		for(int e: tree.toList())
@@ -43,7 +45,7 @@ public class Properties {
 		secondTree.delete(x);
 		assertTrue(tree.equals(secondTree));
 	}
-	
+
 	@Property
 	public void insertSameElements(@From(TreeGenerator.class)@InRange(min="0",max= "100") ArrayNTree<Integer> tree) {
 		ArrayNTree<Integer> secondTree = tree.clone();
@@ -51,7 +53,7 @@ public class Properties {
 			tree.insert(e);
 		assertTrue(tree.equals(secondTree));
 	}
-	
+
 	@Property
 	public void insertSameElementSeveralTimes(@From(TreeGenerator.class)@InRange(min="0",max= "100") ArrayNTree<Integer> tree) {
 		ArrayNTree<Integer> secondTree = tree.clone();
@@ -64,9 +66,9 @@ public class Properties {
 	}
 
 
-	
-	
 
-	
-	
+
+
+
+
 }

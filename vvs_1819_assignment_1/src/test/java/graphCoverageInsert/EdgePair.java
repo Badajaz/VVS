@@ -1,4 +1,4 @@
-	package graphCoverageInsert;
+package graphCoverageInsert;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +18,7 @@ public class EdgePair {
 	 * 
 	 * 
 	 */
-	
+
 	@Test
 	public void testInsertEmptyTree () {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(2);
@@ -26,7 +26,7 @@ public class EdgePair {
 		assertEquals(tree.size(),1,"tamanho errado");
 		assertTrue(tree.contains(1),"elemento errado");
 	}
-	
+
 	/*
 	 * 
 	 * Covers EPC=[5,7][3,5,7][5,7,8]
@@ -46,7 +46,7 @@ public class EdgePair {
 	 * Covers EPC = [3][4][1,3][3,4][1,3,4]
 	 * 
 	 */
-	
+
 	@Test
 	public void testInsertRepetitions() {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(4);
@@ -54,13 +54,13 @@ public class EdgePair {
 		tree.insert(1);
 		assertEquals(tree.size(),1,"tamanho errado");		
 	}
-	
+
 	/*
 	 * 
 	 * Covers EPC = [5][6][7][8][3,5][5,6][6,7][7,8][1,3,5][3,5,6][5,6,7][6,7,8]
 	 * 
 	 */
-	
+
 	@Test
 	public void testSwapElementsAtRoot() {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(1,4);
@@ -68,13 +68,13 @@ public class EdgePair {
 		int value = tree.toList().get(0);
 		assertEquals(value,0,"nao fez swap dos valores quando a root e maior que o elemento inserido");
 	}
-	
+
 	/*
 	 * 
 	 * 	Covers EPC = [9] [10] [11] [12] [13] [7,9] [9,10] [9,11] [11,12] [12,13] [7,9,10] [7,9,11] [9,11,12] [11,12,13]
 	 * 
 	 */
-	
+
 	@Test
 	public void testInsertLowerElementInNonEmptyTree() {
 
@@ -102,7 +102,7 @@ public class EdgePair {
 		int value = tree.toList().get(1);
 		assertEquals(value,5,"nao havia lugar para inserir um elemento");
 	}
-	
+
 	/*
 	 * 
 	 * 
@@ -118,7 +118,7 @@ public class EdgePair {
 		tree.insert(30);
 		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
 	}	
-	
+
 	/*
 	 * 
 	 * Covers EPC = [11,12,14]
@@ -134,13 +134,13 @@ public class EdgePair {
 		tree.insert(22);
 		assertEquals(tree.contains(22),true,"nao havia lugar para inserir um elemento");
 	}
-	
+
 	/*
 	 * 
 	 * Covers EPC = [6,7,9]
 	 * 
 	 */
-	
+
 	@Test
 	public void testAtRoot ()  {
 		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
@@ -148,7 +148,7 @@ public class EdgePair {
 		tree.insert(9);
 		assertTrue(tree.contains(9), "nao esta na root");
 	}
-	
-	
-	
+
+
+
 }
