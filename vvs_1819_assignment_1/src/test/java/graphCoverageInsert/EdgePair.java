@@ -78,9 +78,7 @@ public class EdgePair {
 	@Test
 	public void testInsertLowerElementInNonEmptyTree() {
 
-		List<Integer> lista = new ArrayList<>();
-		lista.add(1);
-		lista.add(3);
+		List<Integer> lista = Arrays.asList(1,3);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,2);
 		tree.insert(2);
 		int value = tree.toList().get(1);
@@ -145,7 +143,9 @@ public class EdgePair {
 	public void testAtRoot ()  {
 		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
+		System.out.println(tree);
 		tree.insert(9);
+		System.out.println(tree);
 		assertTrue(tree.contains(9), "nao esta na root");
 	}
 

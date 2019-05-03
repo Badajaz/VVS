@@ -20,7 +20,7 @@ public class ToListTest {
 	}
 
 	@Test
-	public void tesEmptyList() {
+	public void testEmptyList() {
 		List<Integer> lista = new ArrayList <> ();
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,5);
 		assertTrue(lista.equals(tree.toList()));

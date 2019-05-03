@@ -186,8 +186,6 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 				// otherwise, place it below last child
 				children[position-1].insert(elem); //Node 14
 		}
-		if (!(nChildren<capacity) && children[position] == null)
-			System.out.println("passou aqui");
 		//p8(c9 && c10)
 		else if (nChildren<capacity && elem.compareTo(children[position].max())>0) { //Node 15
 			// element can be placed after an existing node N (there's space and it's larger

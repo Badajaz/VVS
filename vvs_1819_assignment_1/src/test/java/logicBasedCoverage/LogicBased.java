@@ -134,8 +134,11 @@ public class LogicBased {
 	public void testInsertNotFullLevelWithElementlargerThanAllChildrenButNotBiggerThanPreviousChildren() {
 		List<Integer> list = Arrays.asList(10,20,30,50,55,57,58,25,27,28);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
+		System.out.println(tree);
 		tree.delete(30);
+		System.out.println(tree);
 		tree.insert(51);
+		System.out.println(tree);
 		assertTrue(tree.contains(51),"nao havia lugar para inserir um elemento");
 	}
 
