@@ -143,30 +143,31 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	}
 
     /////////////////////////////////////
-
+	
 	public void insert(T elem) {
-		
+		//p1(c1)
 		if(isEmpty()) { //node 1
 			data=elem; //Node 2
 			empty=false; 
 			return; 
 		}
-		
+		//p2(c2)
 		if (contains(elem)) // will not insert repetitions //node 3
 			return; //Node 4
 		
+		//p3(c3)
 		// if elem<data, elem should be at root, and we re-insert data
 		if (data.compareTo(elem)>0) { //Node 5 
 			T tmp = data; data = elem; elem = tmp; // swap values // Node 6
 		}
-		
+		//p4(c4)
 		if(isLeaf()) { //Node 7
 			insertAt(elem, 0);	//Node 8
 			return;
 		}
 		
 		int position = proposePosition(elem);//Node 9
-		
+		//p5(c5)
 		if (position==-1) {
 			// element 'elem' is smaller than all children
 			// then we place it at index 0, and insert the previous children[0] below 'elem'
@@ -174,9 +175,10 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			children[0].data = elem;
 			this.insert(previousValue);
 		} 
-		
+		//p6(c6 && c7)
 		else if (nChildren<capacity && children[position] == null) { //Node 11
 			// there's space available, and elem > all children
+			
 			if (elem.compareTo(children[position-1].max())>0) //Node 12
 				// if elem is also larger than all children of the last child, place it here 
 				insertAt(elem, position); //Node 13
@@ -184,16 +186,17 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 				// otherwise, place it below last child
 				children[position-1].insert(elem); //Node 14
 		}
-		
+		//p7(c8 && c9)
 		else if (nChildren<capacity && elem.compareTo(children[position].max())>0) { //Node 15
 			// element can be placed after an existing node N (there's space and it's larger
 			// than all children of N) but we must shift all those on the right
 			insertAt(elem, position+1); //Node 16
 		}
-		
+		//p8(c10 || c11)
 		else if (nChildren==capacity || elem.compareTo(children[position].max())<0) { //Node 17
 			// if the node's capacity is full, and elem is larger than all children
 			// place it below the last child
+			//p9(c12)
 			if (position==capacity) //Node 18
 				children[position-1].insert(elem); //Node 20
 			else
