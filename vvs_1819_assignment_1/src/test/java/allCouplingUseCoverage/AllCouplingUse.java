@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import sut.ArrayNTree;
 
-public class AllCouplinguse {
+public class AllCouplingUse {
 
 	
 	/*
