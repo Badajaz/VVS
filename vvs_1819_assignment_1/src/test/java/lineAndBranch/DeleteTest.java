@@ -32,7 +32,8 @@ public class DeleteTest {
 	public void testBigRoot() {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(100,1);
 		tree.delete(0);
-		assertEquals(tree.size(),1,"root apagada");
+		List<Integer> lista1 = Arrays.asList(100);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 
@@ -48,8 +49,8 @@ public class DeleteTest {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,5);
 		tree.delete(5);
-		assertEquals(tree.size(),4,"nao apaga o elemento na folha");
-		assertFalse(tree.contains(5), "nao apaga o elemento correto");
+		List<Integer> lista1 = Arrays.asList(1,2,3,4);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	
@@ -62,8 +63,8 @@ public class DeleteTest {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,5);
 		tree.delete(1);
-		assertEquals(tree.size(),4,"nao apaga o elemento na raiz");
-		assertFalse(tree.contains(1), "nao apaga o elemento correto");
+		List<Integer> lista1 = Arrays.asList(2,3,4,5);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	@Test
@@ -71,8 +72,8 @@ public class DeleteTest {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,2);
 		tree.delete(2);
-		assertEquals(tree.size(),4,"nao apaga um elemento");
-		assertFalse(tree.contains(2), "nao apaga o elemento correto");
+		List<Integer> lista1 = Arrays.asList(1,3,4,5);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	@Test
@@ -80,7 +81,8 @@ public class DeleteTest {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,2);
 		tree.delete(8);
-		assertEquals(tree.size(),5,"apaga um elemento que nao existe");
+		List<Integer> lista1 = Arrays.asList(1,2,3,4,5);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	/*
@@ -93,7 +95,8 @@ public class DeleteTest {
 		List<Integer> lista = Arrays.asList(1,2,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,3);
 		tree.delete(2);
-		assertEquals(tree.size(),4,"apaga um elemento que nao existe");
+		List<Integer> lista1 = Arrays.asList(1,3,4,5);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	@Test
@@ -101,7 +104,8 @@ public class DeleteTest {
 		List<Integer> lista = Arrays.asList(1,3,4,5);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,3);
 		tree.delete(2);
-		assertEquals(tree.size(),4,"apaga um elemento que nao existe");
+		List<Integer> lista1 = Arrays.asList(1,3,4,5);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 

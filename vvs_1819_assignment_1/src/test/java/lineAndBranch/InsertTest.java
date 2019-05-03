@@ -1,10 +1,12 @@
 package lineAndBranch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -16,12 +18,11 @@ public class InsertTest {
 
 
 	@Test
-	public void testInsert () {
-
+	public void testInsertIntoEmptyTree () {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(2);
 		tree.insert(1);
-		assertEquals(tree.size(),1,"tamanho errado");
-		assertTrue(tree.contains(1),"elemento errado");
+		List<Integer> lista1 = Arrays.asList(1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 
@@ -30,12 +31,12 @@ public class InsertTest {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(4);
 		tree.insert(1);
 		tree.insert(1);
-		assertEquals(tree.size(),1,"tamanho errado");		
+		List<Integer> lista1 = Arrays.asList(1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	@Test
 	public void testSwapElementsAtRoot() {
-
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(1,4);
 		tree.insert(0);
 		int value = tree.toList().get(0);
@@ -55,13 +56,11 @@ public class InsertTest {
 
 	@Test
 	public void testInsertIfSpaceAvailable() {
-
 		List<Integer> lista =  Arrays.asList(1,2,4);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(3);
-		int value = tree.toList().get(3);
-		assertEquals(value,4,"nao havia lugar para inserir um elemento");
-
+		List<Integer> lista1 =  Arrays.asList(1,2,3,4);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	@Test
@@ -69,18 +68,17 @@ public class InsertTest {
 		List<Integer> lista = Arrays.asList(1,2,7,9);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(3);
-		int value = tree.toList().get(2);
-		assertEquals(value,3,"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(1,2,3,7,9);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	@Test
 	public void testInsertSmallerThanAllChildren() {
-		
 		List<Integer> lista = Arrays.asList(1,10,20);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(5);
-		int value = tree.toList().get(1);
-		assertEquals(value,5,"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(1,5,10,20);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	
@@ -90,8 +88,8 @@ public class InsertTest {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(30);
 		tree.insert(30);
-		assertTrue(tree.contains(30),"nao havia lugar para inserir um elemento");
-	
+		List<Integer> lista1 = Arrays.asList(10,15,16,17,20,30,40);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	@Test
@@ -99,7 +97,8 @@ public class InsertTest {
 		List<Integer> list = Arrays.asList(10,20,30);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.insert(15);
-		assertTrue(tree.contains(15),"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(10,15,20,30);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	@Test
@@ -108,24 +107,21 @@ public class InsertTest {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(30);
 		tree.insert(51);
-		assertTrue(tree.contains(51),"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(10,20,50,55,57,58,25,27,28,51);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 	
 	@Test
-	public void test2() {
+	public void testHasCapacityAndElementsSmallerThenAllRecomendedChildren() {
 		List<Integer> list = Arrays.asList(2,7,11,15,25,30,17,18,19);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 5);
 		tree.delete(30);
 		tree.insert(16);
-		assertTrue(tree.contains(16),"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(2,7,11,15,16,25,17,18,19);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
-	
-
-
-
-
-
-
 
 
 }

@@ -192,7 +192,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			// than all children of N) but we must shift all those on the right
 			insertAt(elem, position+1); //Node 16
 		}
-		//p9(c11 || c12)
+		//p9(c11 || c12) //infeasible (False || False)
 		else if (nChildren==capacity || elem.compareTo(children[position].max())<0) { //Node 17
 			// if the node's capacity is full, and elem is larger than all children
 			// place it below the last child

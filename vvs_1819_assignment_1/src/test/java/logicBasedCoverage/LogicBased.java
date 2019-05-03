@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -20,12 +21,11 @@ public class LogicBased {
 	 */
 
 	@Test
-	public void testInsert () {
-
+	public void testInsertIntoEmptyTree () {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(2);
 		tree.insert(1);
-		assertEquals(tree.size(),1,"tamanho errado");
-		assertTrue(tree.contains(1),"elemento errado");
+		List<Integer> lista1 = Arrays.asList(1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	/*
@@ -39,7 +39,8 @@ public class LogicBased {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(4);
 		tree.insert(1);
 		tree.insert(1);
-		assertEquals(tree.size(),1,"tamanho errado");		
+		List<Integer> lista1 = Arrays.asList(1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 
@@ -57,6 +58,7 @@ public class LogicBased {
 		int value = tree.toList().get(0);
 		assertEquals(value,0,"nao fez swap dos valores quando a root e maior que o elemento inserido");
 	}
+
 
 
 	/*
@@ -82,14 +84,13 @@ public class LogicBased {
 
 	@Test
 	public void testInsertIfSpaceAvailable() {
-
 		List<Integer> lista =  Arrays.asList(1,2,4);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(3);
-		int value = tree.toList().get(3);
-		assertEquals(value,4,"nao havia lugar para inserir um elemento");
-
+		List<Integer> lista1 =  Arrays.asList(1,2,3,4);
+		assertTrue(lista1.equals(tree.toList()));
 	}
+
 
 	/*
 	 * 
@@ -102,10 +103,9 @@ public class LogicBased {
 		List<Integer> lista = Arrays.asList(1,2,7,9);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(3);
-		int value = tree.toList().get(2);
-		assertEquals(value,3,"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(1,2,3,7,9);
+		assertTrue(lista1.equals(tree.toList()));
 	}
-
 
 	/*
 	 * 
@@ -120,8 +120,8 @@ public class LogicBased {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(30);
 		tree.insert(30);
-		assertTrue(tree.contains(30),"nao havia lugar para inserir um elemento");
-
+		List<Integer> lista1 = Arrays.asList(10,15,16,17,20,30,40);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	/*
@@ -130,26 +130,34 @@ public class LogicBased {
 	 * coverage  c8  e ~c8
 	 * 
 	 */
+	
 	@Test
-	public void testInsertNotFullLevelWithElementlargerThanAllChildrenButNotBiggerThanPreviousChildren() {
+	public void testInsertNotFullLevelWithElementlargerThenAllChildrenButNotBiggerThanPreviousChildren() {
 		List<Integer> list = Arrays.asList(10,20,30,50,55,57,58,25,27,28);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
-		System.out.println(tree);
 		tree.delete(30);
-		System.out.println(tree);
 		tree.insert(51);
-		System.out.println(tree);
-		assertTrue(tree.contains(51),"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(10,20,50,55,57,58,25,27,28,51);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
-
-
-
-
-
-
-
-
+	/*
+	 * 
+	 * coverage c11 && c12 ,c9 && ~c10
+	 * 
+	 */
+	
+	@Test
+	public void testHasCapacityAndElementsSmallerThenAllRecomendedChildren() {
+		List<Integer> list = Arrays.asList(2,7,11,15,25,30,17,18,19);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 5);
+		tree.delete(30);
+		tree.insert(16);
+		List<Integer> lista1 = Arrays.asList(2,7,11,15,16,25,17,18,19);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));
+	}
 
 
 }

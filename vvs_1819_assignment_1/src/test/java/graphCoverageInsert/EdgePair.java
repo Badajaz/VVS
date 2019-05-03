@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,8 @@ public class EdgePair {
 	public void testInsertEmptyTree () {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(2);
 		tree.insert(1);
-		assertEquals(tree.size(),1,"tamanho errado");
-		assertTrue(tree.contains(1),"elemento errado");
+		List<Integer> lista1 = Arrays.asList(1);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	/*
@@ -37,8 +38,8 @@ public class EdgePair {
 	public void testInsertIsLeaf() {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(1,2);
 		tree.insert(2);
-		assertEquals(tree.size(),2,"tamanho errado");
-		assertTrue(tree.contains(2),"elemento errado");
+		List<Integer> lista1 = Arrays.asList(1,2);
+		assertTrue(lista1.equals(tree.toList()));
 	}
 
 	/*
@@ -52,7 +53,8 @@ public class EdgePair {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(4);
 		tree.insert(1);
 		tree.insert(1);
-		assertEquals(tree.size(),1,"tamanho errado");		
+		List<Integer> lista1 = Arrays.asList(1);
+		assertTrue(lista1.equals(tree.toList()));	
 	}
 
 	/*
@@ -65,10 +67,9 @@ public class EdgePair {
 	public void testSwapElementsAtRoot() {
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(1,4);
 		tree.insert(0);
-		int value = tree.toList().get(0);
-		assertEquals(value,0,"nao fez swap dos valores quando a root e maior que o elemento inserido");
+		List<Integer> lista1 = Arrays.asList(0,1);
+		assertTrue(lista1.equals(tree.toList()));	
 	}
-
 	/*
 	 * 
 	 * 	Covers EPC = [9] [10] [11] [12] [13] [7,9] [9,10] [9,11] [11,12] [12,13] [7,9,10] [7,9,11] [9,11,12] [11,12,13]
@@ -77,12 +78,11 @@ public class EdgePair {
 
 	@Test
 	public void testInsertLowerElementInNonEmptyTree() {
-
-		List<Integer> lista = Arrays.asList(1,3);
+		List<Integer> lista =Arrays.asList(1,3);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,2);
 		tree.insert(2);
-		int value = tree.toList().get(1);
-		assertEquals(value,2,"nao inseriu um menor valor numa arvore vazia");
+		List<Integer> lista1 = Arrays.asList(1,2,3);
+		assertTrue(lista1.equals(tree.toList()));	
 	}
 
 	/*
@@ -97,8 +97,8 @@ public class EdgePair {
 		List<Integer> lista = Arrays.asList(1,10,20);
 		ArrayNTree<Integer> tree = new ArrayNTree<Integer>(lista,3);
 		tree.insert(5);
-		int value = tree.toList().get(1);
-		assertEquals(value,5,"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(1,5,10,20);
+		assertTrue(lista1.equals(tree.toList()));	
 	}
 
 	/*
@@ -114,7 +114,9 @@ public class EdgePair {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(30);
 		tree.insert(30);
-		assertEquals(tree.contains(30),true,"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(10,20,16,17,30,40,15);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));
 	}	
 
 	/*
@@ -130,7 +132,9 @@ public class EdgePair {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
 		tree.delete(20);
 		tree.insert(22);
-		assertEquals(tree.contains(22),true,"nao havia lugar para inserir um elemento");
+		List<Integer> lista1 = Arrays.asList(10,17,21,23,25,26,40,50,35,22);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));	
 	}
 
 	/*
@@ -143,10 +147,10 @@ public class EdgePair {
 	public void testAtRoot ()  {
 		List<Integer> list = Arrays.asList(10,20,16,17,30,40,15);
 		ArrayNTree<Integer> tree = new ArrayNTree<>(list, 3);
-		System.out.println(tree);
 		tree.insert(9);
-		System.out.println(tree);
-		assertTrue(tree.contains(9), "nao esta na root");
+		List<Integer> lista1 = Arrays.asList(9,10,20,16,17,30,40,15);
+		Collections.sort(lista1);
+		assertTrue(lista1.equals(tree.toList()));	
 	}
 
 
