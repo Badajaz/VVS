@@ -15,7 +15,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	private T       data;               // the root's data
 	private int     nChildren;          // number of successors
 	private ArrayNTree<T>[] children;
-	
+
 	/**
 	 * Creates an empty tree 
 	 * @param capacity The capacity of each node, ie, the maximum number of direct successors
@@ -36,9 +36,9 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	public ArrayNTree(T elem, int capacity) {
 		this(capacity);
 		this.empty     = false;
-		this.data      = elem;
+		this.data      = elem;		
 	}
-	
+
 	/**
 	 * Creates a tree with the elements inside the given list
 	 * @param elem     The list with all the elements to insert
@@ -49,20 +49,20 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		for(T elem : list)
 			insert(elem);
 	}
-		
+
 	/////////////////////////////////////
 
 	public boolean isEmpty() {
 		return empty;
 	}
 
-    /////////////////////////////////////
+	/////////////////////////////////////
 
 	public boolean isLeaf() {
 		return !empty && nChildren == 0;
 	}
 
-    /////////////////////////////////////
+	/////////////////////////////////////
 	//colocar no relatório que apanhamos um erro  quando é uma árvore vazia(devolve 1 e devia devolver 0)
 	public int size() {
 		int sum=0;
@@ -71,16 +71,16 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		}
 		for(NTree<T> brt : children)
 			if (brt!=null)
-			    sum += brt.size();
+				sum += brt.size();
 		return 1+sum;
 	}
 
-    /////////////////////////////////////
+	/////////////////////////////////////
 
 	public int countLeaves() {
 		if (isLeaf())
 			return 1;
-		
+
 		int sum=0;
 		for(NTree<T> brt : children)
 			if (brt!=null)
@@ -88,12 +88,12 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		return sum;
 	}
 
-    /////////////////////////////////////
+	/////////////////////////////////////
 
 	public int height() {
 		if (isEmpty())
 			return 0;
-		
+
 		int maxHeight=0;
 		for(NTree<T> brt : children) {
 			if (brt==null)
@@ -105,45 +105,47 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		return 1+maxHeight;
 	}
 
-    /////////////////////////////////////
-	
+	/////////////////////////////////////
+
 	public T min() {
 		return data;
 	}
-	
-    /////////////////////////////////////
-	
+
+	/////////////////////////////////////
+	//max necessita do caso em que a arvore e vazia
 	public T max() {
+
 		if (isLeaf())
 			return data;
-		
+
+
 		return children[nChildren-1].max();
 	}
 
-    /////////////////////////////////////
+	/////////////////////////////////////
 
 	public boolean contains(T elem) {
 		if (isEmpty())
 			return false;
-		
+
 		if (data.compareTo(elem)==0) // elem == root
 			return true;
-		
+
 		// if there are no elements left, or the smallest child is > elem,
 		// then the tree does not contain elem
 		if (isLeaf() || elem.compareTo(children[0].data)<0) 
 			return false;
-		
+
 		int position = proposePosition(elem);
-		
+
 		if(position==nChildren)  // elem>all children: need to look at last child
 			position = nChildren-1;
-		
+
 		return children[position].data.compareTo(elem)==0 || children[position].contains(elem);
 	}
 
-    /////////////////////////////////////
-	
+	/////////////////////////////////////
+
 	public void insert(T elem) {
 		//p1(c1)
 		if(isEmpty()) { //node 1
@@ -154,7 +156,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		//p2(c2)
 		if (contains(elem)) // will not insert repetitions //node 3
 			return; //Node 4
-		
+
 		//p3(c3)
 		// if elem<data, elem should be at root, and we re-insert data
 		if (data.compareTo(elem)>0) { //Node 5 
@@ -165,7 +167,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			insertAt(elem, 0);	//Node 8
 			return;
 		}
-		
+
 		int position = proposePosition(elem);//Node 9
 		//p5(c5)
 		if (position==-1) {
@@ -204,24 +206,24 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 				children[position].insert(elem); //Node 21
 		}
 		//Node 19
-		
+
 	}
 
-    /////////////////////////////////////
-	
+	/////////////////////////////////////
+
 	public void delete(T elem) {
-		
+
 		// the minimum value is at the root, if something smaller
 		// appears, the tree does not contain it
-	
+
 		if(isEmpty() || data.compareTo(elem)>0)	//node 1
 			return; //node 2
-		
+
 		if(isLeaf()) { //node 3
 			empty = data.compareTo(elem)==0;
 			return; //node 4
 		}
-		
+
 		// is elem in the root?
 		if (data.compareTo(elem)==0) { //node 5
 			// we need to replace it with the lowest child (children[0])
@@ -229,7 +231,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			data = children[0].data; //node 6
 			children[0].delete(data);
 		} else {
-			 int position = proposePosition(elem); //node 7
+			int position = proposePosition(elem); //node 7
 			// if elem < all children, the element does not exist in the tree
 			if (position<0)
 				return;//node 8
@@ -244,7 +246,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		compact(children); //node 12		
 	}
 
-    /////////////////////////////////////
+	/////////////////////////////////////
 
 	// find an eventual single empty tree, and shift all next elements to the left
 	private void compact(ArrayNTree<T>[] children) {//Node 1
@@ -280,23 +282,23 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 				break;
 			if (children[i].data.compareTo(elem)>0) { //Node 5
 				// element should not be place here or ahead, go back one position, and end search
-				index--;
+				index--;//Node 6
 				break;
 			}
-			if (children[i].data.compareTo(elem)<0) {
-				//Node 6
+			if (children[i].data.compareTo(elem)<0) {//Node 7
+				//Node 8
 				index++;
 			}
-				// this child is still smaller, check next one 
-				
+			// this child is still smaller, check next one 
+
 		}
-		
+
 		return index; //Node 3
 	}
 
 	/////////////////////////////////////
 
-	
+
 	/**
 	 * Is this tree equal to another object?
 	 * Two NTrees are equal iff they have the same values
@@ -304,44 +306,43 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object other) {
 		return this == other ||
-			     other instanceof NTree &&
-			     equalTrees(this, ((NTree<T>) other));
+				other instanceof NTree &&
+				equalTrees(this, ((NTree<T>) other));
 	}
 
 	// compares the elements between to NTrees
 	private boolean equalTrees(NTree<T> one, NTree<T> other) {
-		
+
 		if (one == other)
 			return true;
-				
+
 		if (one != null && other != null) {
 			Iterator<T> it1 = one.iterator();
 			Iterator<T> it2 = other.iterator();
-			
+
 			while(it1.hasNext() && it2.hasNext())
 				if(!it1.next().equals(it2.next()))
 					return false;
-			
+
 			if(!it1.hasNext() && !it2.hasNext())
 				return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/////////////////////////////////////
 	// corrigido para o caso em que o elemento é null
 	public List<T> toList() {
 		List<T> list = new LinkedList<>();
 		for(T elem : this)
-			if (elem != null) {
-				list.add(elem);
-			}
-        return list;  // already sorted		
+			list.add(elem);
+
+		return list;  // already sorted		
 	}
-	
+
 	/////////////////////////////////////
-	
+
 	/**
 	 * @returns a new tree with the same elements of this
 	 */
@@ -359,17 +360,17 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 
 		if (isLeaf())
 			return "["+data+"]";
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("["+data+":");
-		
+
 		for(NTree<T> brt : children)
 			if (brt!=null)
 				sb.append(brt.toString());
-		
+
 		return sb.append("]").toString();				
 	}
-	
+
 	// more detailed information about tree structure 
 	public String info() {
 		return this + ", size: " + size() + ", height: " + height() + ", nLeaves: " + countLeaves();
@@ -381,22 +382,25 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 	public Iterator<T> iterator() {
 		return new PrefixIterator(this);
 	}
-	
+
 	private class PrefixIterator implements Iterator<T> {
-		
+
 		/**
 		 * Stack of nodes whose descendants are currently being visited
 		 */
 		private LinkedList<ArrayNTree<T>> stack;
-	
+
 		/**
 		 * Constructor
 		 */
 		public PrefixIterator(ArrayNTree<T> tree) {
 			stack = new LinkedList<>();
-			stack.push(tree);
+			if (!tree.isEmpty()) {
+				stack.push(tree);
+			}
+
 		}
-	
+
 		/**
 		 * Verifies if iterator still has elements
 		 * @return true if the iterator still has elements, false otherwise
@@ -404,7 +408,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 		public boolean hasNext() {
 			return !stack.isEmpty();
 		}
-	
+
 		/**
 		 * Returns the next element
 		 * @return - next element
@@ -418,7 +422,7 @@ public class ArrayNTree<T extends Comparable<T>> implements NTree<T> {
 			stack.pop();
 			for(int i=tree.nChildren-1; i>=0; i--)
 				stack.push(tree.children[i]);
-			
+
 			return tree.data;
 		}
 	}

@@ -19,7 +19,7 @@ public class DeleteTest {
 	 * 
 	 */
 
-	@Test
+	/*@Test
 	public void testEmptyTree() {
 		ArrayNTree<Integer> tree = new ArrayNTree<>(1);
 		tree.delete(0);
@@ -92,6 +92,16 @@ public class DeleteTest {
 		tree.delete(2);
 		List<Integer> lista1 = Arrays.asList(1,3,4,5);
 		assertTrue(lista1.equals(tree.toList()));
+	}*/
+	
+	@Test
+	public void testCase() {
+		
+		List<Integer> lista = Arrays.asList(-717,-282,-162,205,283,356,357,392,844);
+		ArrayNTree<Integer> tree = new ArrayNTree<>(lista,5);
+		ArrayNTree<Integer> treeDois  = tree.clone();
+		tree.insert(-717);
+		assertTrue(treeDois.equals(tree));
 	}
 	
 
