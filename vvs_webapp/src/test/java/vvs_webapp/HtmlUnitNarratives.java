@@ -57,7 +57,10 @@ public class HtmlUnitNarratives {
 		final String nomeJoseFaria = "JOSE FARIA";
 		final String vatJoseFaria = "197672337";
 		final String ruaJoseFaria = "Rua do Ouro";
-		int adressCount;
+		final String doorJoseFaria = "12";
+		final String postalCodeJoseFaria = "1600-477";
+		final String localityCodeJoseFaria = "Lisboa";
+		int adressCount=0;
 
 
 		assertEquals("WebAppDemo Menu", page.getTitleText());
@@ -113,7 +116,7 @@ public class HtmlUnitNarratives {
 			List<HtmlElement> items = reportPage.getByXPath("//tr");
 			adressCount = items.size()-1;
 		}
-
+		System.out.println("adressCount = "+adressCount);
 
 		HtmlAnchor addAddressToCustomer  = page.getAnchorByHref("addAddressToCustomer.html");
 		HtmlPage addAddressToCustomerPage = null;
@@ -131,11 +134,11 @@ public class HtmlUnitNarratives {
 		HtmlInput adressInputAdress = addCustomerForm.getInputByName("address");
 		vatInput.setValueAttribute(ruaJoseFaria);
 		HtmlInput doorInputAdress = addCustomerForm.getInputByName("door");
-		vatInput.setValueAttribute("12");
+		vatInput.setValueAttribute(doorJoseFaria);
 		HtmlInput postalCodeInputAdress = addCustomerForm.getInputByName("postalCode");
-		vatInput.setValueAttribute("1600-477");
+		vatInput.setValueAttribute(postalCodeJoseFaria);
 		HtmlInput localityInputAdress = addCustomerForm.getInputByName("locality");
-		vatInput.setValueAttribute("Lisboa");
+		vatInput.setValueAttribute(localityCodeJoseFaria);
 
 		//o butão não tem name 
 		HtmlInput insert = addCustomerForm.getInputByValue("Insert");
@@ -147,8 +150,42 @@ public class HtmlUnitNarratives {
 			System.err.println("não deu submit");
 		}
 
-		String textReportPageAdress = reportPageAdress.asText();
-		System.out.println(textReportPageAdress);
+		HtmlPage report = null;
+		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
+			java.net.URL url = null;
+			try {
+				url = new java.net.URL(APPLICATION_URL+"GetCustomerPageController");
+			} catch (MalformedURLException e) {
+				System.err.println("Pagina inexistente " + e.getMessage());
+			}
+			WebRequest requestSettings = new WebRequest(url,HttpMethod.POST);
+			requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
+			requestSettings.getRequestParameters().add(new NameValuePair("vat", vatJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("address", ruaJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("door", doorJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("postalCode", postalCodeJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("locality", localityCodeJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("submit", "Get+Customer"));
+
+			try {
+				report = webClient.getPage(requestSettings);
+			} catch (FailingHttpStatusCodeException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		assertTrue(reportPage.asXml().contains(nomeJoseFaria));
+		
+		int adressCount2 = 0; 
+		
+		if(reportPage.asXml().contains("<table")) {
+			List<HtmlElement> items = reportPage.getByXPath("//tr");
+			adressCount2 = items.size()-1;
+		}
+		
+		System.out.println("adressCount2 = "+adressCount2);
+		
 
 	}
 
