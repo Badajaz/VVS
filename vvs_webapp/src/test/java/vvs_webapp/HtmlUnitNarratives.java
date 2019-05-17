@@ -257,13 +257,13 @@ public class HtmlUnitNarratives {
 				e.printStackTrace();
 			}
 		}
-
-		if(report.asXml().contains("<p>")) {
+		List<Object> mensagemErro = null;
+		if(report.asXml().contains("<li>")) {
 			//obter o nome do 1º elemento
-			List<Object> mensagemErro = report.getByXPath("//p/text ()");
+			mensagemErro = report.getByXPath("//li/text ()");
 			System.out.println(mensagemErro);
 		}
-		assertTrue(report.asXml().contains(nomeJoseFaria));
+		assertTrue(mensagemErro.contains("It was not possible to fulfill the request: Can't add customer with vat number "+vatJoseFaria+"."));
 
 		//o erro vai para o controller AddCustomerPageController
 
