@@ -28,7 +28,15 @@ import com.gargoylesoftware.htmlunit.util.NameValuePair;
 public class HtmlUnitNarratives {
 
 	private static final String APPLICATION_URL = "http://localhost:8080/VVS_webappdemo/";
-
+	private static final String idJoseFaria = "1";
+	private static final String telJoseFaria = "914276732";
+	private static final String nomeJoseFaria = "JOSE FARIA";
+	private static final String vatJoseFaria = "197672337";
+	private static final String ruaJoseFaria = "Rua do Ouro";
+	private static final String doorJoseFaria = "12";
+	private static final String postalCodeJoseFaria = "1600-477";
+	private static final String localityCodeJoseFaria = "Lisboa";
+	
 
 	private static HtmlPage page;
 
@@ -52,14 +60,7 @@ public class HtmlUnitNarratives {
 
 	@Test
 	public void insertNewAddressForExistingCustomer() {
-		final String idJoseFaria = "1";
-		final String telJoseFaria = "914276732";
-		final String nomeJoseFaria = "JOSE FARIA";
-		final String vatJoseFaria = "197672337";
-		final String ruaJoseFaria = "Rua do Ouro";
-		final String doorJoseFaria = "12";
-		final String postalCodeJoseFaria = "1600-477";
-		final String localityCodeJoseFaria = "Lisboa";
+
 		int adressCount=0;
 
 
@@ -191,6 +192,7 @@ public class HtmlUnitNarratives {
 
 	@Test
 	public void InsertExistingCustomerAndCheckIfReturnsError() {
+		
 		assertEquals("WebAppDemo Menu", page.getTitleText());
 		HtmlAnchor listingAllCustomers = page.getAnchorByHref("GetAllCustomersPageController");
 		HtmlPage listingAllCustomersPage = null;
@@ -207,8 +209,65 @@ public class HtmlUnitNarratives {
 		}
 		
 		
+		HtmlAnchor insertCustomer = page.getAnchorByHref("addCustomer.html");
+		HtmlPage insertCustomerPage = null;
+		try {
+			insertCustomerPage = (HtmlPage)insertCustomer.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			System.err.println("link para a pagina errada");
+		}
+		assertEquals("Enter Name", insertCustomerPage.getTitleText());
 		
+		HtmlForm insertCustomerForm = insertCustomerPage.getForms().get(0);
+		HtmlInput vatInput = insertCustomerForm.getInputByName("vat");
+		vatInput.setValueAttribute(vatJoseFaria);
+		HtmlInput designationInput = insertCustomerForm.getInputByName("designation");
+		vatInput.setValueAttribute(nomeJoseFaria);
+		HtmlInput phoneInput = insertCustomerForm.getInputByName("phone");
+		vatInput.setValueAttribute(telJoseFaria);
+		
+		HtmlInput getCustomer = insertCustomerForm.getInputByName("submit");
+		
+		HtmlPage report = null;
+		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
+			java.net.URL url = null;
+			try {
+				url = new java.net.URL(APPLICATION_URL+"AddCustomerPageController");
+			} catch (MalformedURLException e) {
+				System.err.println("Pagina inexistente " + e.getMessage());
+			}
+			WebRequest requestSettings = new WebRequest(url,HttpMethod.POST);
+			requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
+			requestSettings.getRequestParameters().add(new NameValuePair("vat", vatJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("address", ruaJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("door", doorJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("postalCode", postalCodeJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("locality", localityCodeJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("submit", "Get+Customer"));
 
+			try {
+				report = webClient.getPage(requestSettings);
+			} catch (FailingHttpStatusCodeException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(listingAllCustomersPage.asXml().contains("<p>")) {
+			//obter o nome do 1º elemento
+			String nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
+		}
+		assertTrue(report.asXml().contains(nomeJoseFaria));
+		
+		
+		//o erro vai para o controller AddCustomerPageController
+		
+		
+		
+		
+		
 	}
 
 
