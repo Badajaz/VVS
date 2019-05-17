@@ -36,7 +36,7 @@ public class HtmlUnitNarratives {
 	private static final String doorJoseFaria = "12";
 	private static final String postalCodeJoseFaria = "1600-477";
 	private static final String localityCodeJoseFaria = "Lisboa";
-	
+
 
 	private static HtmlPage page;
 
@@ -185,14 +185,13 @@ public class HtmlUnitNarratives {
 			adressCount2 = items.size()-1;
 		}
 
-
 		System.out.println("adressCount2 = "+adressCount2);
-
+		assertEquals(adressCount2, adressCount+1);
 	}
 
 	@Test
 	public void InsertExistingCustomerAndCheckIfReturnsError() {
-		
+
 		assertEquals("WebAppDemo Menu", page.getTitleText());
 		HtmlAnchor listingAllCustomers = page.getAnchorByHref("GetAllCustomersPageController");
 		HtmlPage listingAllCustomersPage = null;
@@ -202,13 +201,13 @@ public class HtmlUnitNarratives {
 			e.printStackTrace();
 		}
 		assertEquals("Customers Info", listingAllCustomersPage.getTitleText());
-		
+
 		if(listingAllCustomersPage.asXml().contains("<table")) {
 			//obter o nome do 1º elemento
 			String nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
 		}
-		
-		
+
+
 		HtmlAnchor insertCustomer = page.getAnchorByHref("addCustomer.html");
 		HtmlPage insertCustomerPage = null;
 		try {
@@ -218,7 +217,7 @@ public class HtmlUnitNarratives {
 			System.err.println("link para a pagina errada");
 		}
 		assertEquals("Enter Name", insertCustomerPage.getTitleText());
-		
+
 		HtmlForm insertCustomerForm = insertCustomerPage.getForms().get(0);
 		HtmlInput vatInput = insertCustomerForm.getInputByName("vat");
 		vatInput.setValueAttribute(vatJoseFaria);
@@ -226,9 +225,15 @@ public class HtmlUnitNarratives {
 		vatInput.setValueAttribute(nomeJoseFaria);
 		HtmlInput phoneInput = insertCustomerForm.getInputByName("phone");
 		vatInput.setValueAttribute(telJoseFaria);
-		
+
+
 		HtmlInput getCustomer = insertCustomerForm.getInputByName("submit");
-		
+		try {
+			HtmlPage getCustomerSubmit = getCustomer.click();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		HtmlPage report = null;
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
 			java.net.URL url = null;
@@ -240,10 +245,8 @@ public class HtmlUnitNarratives {
 			WebRequest requestSettings = new WebRequest(url,HttpMethod.POST);
 			requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
 			requestSettings.getRequestParameters().add(new NameValuePair("vat", vatJoseFaria));
-			requestSettings.getRequestParameters().add(new NameValuePair("address", ruaJoseFaria));
-			requestSettings.getRequestParameters().add(new NameValuePair("door", doorJoseFaria));
-			requestSettings.getRequestParameters().add(new NameValuePair("postalCode", postalCodeJoseFaria));
-			requestSettings.getRequestParameters().add(new NameValuePair("locality", localityCodeJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("designation", nomeJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("phone", telJoseFaria));
 			requestSettings.getRequestParameters().add(new NameValuePair("submit", "Get+Customer"));
 
 			try {
@@ -254,20 +257,16 @@ public class HtmlUnitNarratives {
 				e.printStackTrace();
 			}
 		}
-		
-		if(listingAllCustomersPage.asXml().contains("<p>")) {
+
+		if(report.asXml().contains("<p>")) {
 			//obter o nome do 1º elemento
-			String nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
+			List<Object> mensagemErro = report.getByXPath("//p/text ()");
+			System.out.println(mensagemErro);
 		}
 		assertTrue(report.asXml().contains(nomeJoseFaria));
-		
-		
+
 		//o erro vai para o controller AddCustomerPageController
-		
-		
-		
-		
-		
+
 	}
 
 
