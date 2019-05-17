@@ -178,15 +178,15 @@ public class HtmlUnitNarratives {
 		assertTrue(reportPage.asXml().contains(nomeJoseFaria));
 		
 		int adressCount2 = 0; 
-		
-		if(reportPage.asXml().contains("<table")) {
-			List<HtmlElement> items = reportPage.getByXPath("//tr");
+
+		if(report.asXml().contains("<table")) {
+			List<HtmlElement> items = report.getByXPath("//tr");
 			adressCount2 = items.size()-1;
 		}
 		
+		
 		System.out.println("adressCount2 = "+adressCount2);
 		
-
 	}
 
 }
