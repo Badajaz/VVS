@@ -176,17 +176,46 @@ public class HtmlUnitNarratives {
 			}
 		}
 		assertTrue(reportPage.asXml().contains(nomeJoseFaria));
-		
+
 		int adressCount2 = 0; 
 
 		if(report.asXml().contains("<table")) {
 			List<HtmlElement> items = report.getByXPath("//tr");
 			adressCount2 = items.size()-1;
 		}
-		
-		
+
+
 		System.out.println("adressCount2 = "+adressCount2);
-		
+
 	}
+
+	@Test
+	public void InsertExistingCustomerAndCheckIfReturnsError() {
+		assertEquals("WebAppDemo Menu", page.getTitleText());
+		HtmlAnchor listingAllCustomers = page.getAnchorByHref("GetAllCustomersPageController");
+		HtmlPage listingAllCustomersPage = null;
+		try {
+			listingAllCustomersPage = (HtmlPage) listingAllCustomers.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		assertEquals("Customers Info", listingAllCustomersPage.getTitleText());
+		
+		if(listingAllCustomersPage.asXml().contains("<table")) {
+			//obter o nome do 1º elemento
+			String nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
+		}
+		
+		
+		
+
+	}
+
+
+
+
+
+
+
 
 }
