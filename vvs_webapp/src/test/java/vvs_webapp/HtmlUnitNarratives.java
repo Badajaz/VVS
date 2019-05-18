@@ -269,6 +269,83 @@ public class HtmlUnitNarratives {
 
 	}
 
+	@Test
+	public void createAndRemoveCustomer() {
+		
+		final String vatNewCustomer = "123456789";
+		final String designationNewCustomer = "Manuel Ferreira";
+		final String phoneNewCustomer = "912345678";
+		
+		assertEquals("WebAppDemo Menu", page.getTitleText());
+		
+		HtmlAnchor addCustomer = page.getAnchorByHref("addCustomer.html");
+		
+		HtmlPage addCustomerPage = null;
+		try {
+			addCustomerPage = (HtmlPage)addCustomer.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			System.err.println("link para a pagina errada");
+		}
+		assertEquals("Enter Name", addCustomerPage.getTitleText());
+		
+		HtmlForm addCustomerForm = addCustomerPage.getForms().get(0);
+		
+		HtmlInput vatInput = addCustomerForm.getInputByName("vat");
+		vatInput.setValueAttribute(vatNewCustomer);
+		
+		HtmlInput designationInput = addCustomerForm.getInputByName("designation");
+		designationInput.setValueAttribute(designationNewCustomer);
+		
+		HtmlInput phoneInput = addCustomerForm.getInputByName("phone");
+		phoneInput.setValueAttribute(phoneNewCustomer);
+		
+		HtmlInput submit = addCustomerForm.getInputByName("submit");
+		HtmlPage reportPage = null;
+		
+		try {
+			reportPage = submit.click();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String textReportPage = reportPage.asText();
+		assertTrue(textReportPage.contains(vatNewCustomer));
+		assertTrue(textReportPage.contains(designationNewCustomer));
+		assertTrue(textReportPage.contains(phoneNewCustomer));
+		
+		
+		HtmlPage report = null;
+		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
+			java.net.URL url = null;
+			try {
+				url = new java.net.URL(APPLICATION_URL+"AddCustomerPageController");
+			} catch (MalformedURLException e) {
+				System.err.println("Pagina inexistente " + e.getMessage());
+			}
+			WebRequest requestSettings = new WebRequest(url,HttpMethod.POST);
+			requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
+			requestSettings.getRequestParameters().add(new NameValuePair("vat", vatNewCustomer));
+			requestSettings.getRequestParameters().add(new NameValuePair("designation", designationNewCustomer));
+			requestSettings.getRequestParameters().add(new NameValuePair("phone", phoneNewCustomer));
+			requestSettings.getRequestParameters().add(new NameValuePair("submit", "Get+Customer"));
+
+			try {
+				report = webClient.getPage(requestSettings);
+			} catch (FailingHttpStatusCodeException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		System.out.println(report.asXml());
+		
+		
+
+		
+		
+	}
 
 
 
