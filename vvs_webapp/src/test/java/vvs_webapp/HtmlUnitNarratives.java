@@ -1,7 +1,9 @@
 package vvs_webapp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -63,7 +65,6 @@ public class HtmlUnitNarratives {
 
 		int adressCount=0;
 
-
 		assertEquals("WebAppDemo Menu", page.getTitleText());
 		HtmlAnchor customerByVATLink = page.getAnchorByHref("getCustomerByVAT.html");
 		HtmlPage customerByVATPage = null;
@@ -86,7 +87,6 @@ public class HtmlUnitNarratives {
 			System.err.println("não deu submit");
 		}
 		String textReportPage = resultado.asText();
-		//System.out.println("textReportPage = "+textReportPage);
 		assertTrue(textReportPage.contains(vatJoseFaria));
 
 		HtmlPage reportPage = null;
@@ -117,7 +117,6 @@ public class HtmlUnitNarratives {
 			List<HtmlElement> items = reportPage.getByXPath("//tr");
 			adressCount = items.size()-1;
 		}
-		System.out.println("adressCount = "+adressCount);
 
 		HtmlAnchor addAddressToCustomer  = page.getAnchorByHref("addAddressToCustomer.html");
 		HtmlPage addAddressToCustomerPage = null;
@@ -131,27 +130,34 @@ public class HtmlUnitNarratives {
 
 		HtmlForm addCustomerForm = addAddressToCustomerPage.getForms().get(0);
 		HtmlInput vatInputAdress = addCustomerForm.getInputByName("vat");
-		vatInput.setValueAttribute(vatJoseFaria);
+		vatInputAdress.setValueAttribute(vatJoseFaria);
 		HtmlInput adressInputAdress = addCustomerForm.getInputByName("address");
-		vatInput.setValueAttribute(ruaJoseFaria);
+		adressInputAdress.setValueAttribute(ruaJoseFaria);
 		HtmlInput doorInputAdress = addCustomerForm.getInputByName("door");
-		vatInput.setValueAttribute(doorJoseFaria);
+		doorInputAdress.setValueAttribute(doorJoseFaria);
 		HtmlInput postalCodeInputAdress = addCustomerForm.getInputByName("postalCode");
-		vatInput.setValueAttribute(postalCodeJoseFaria);
+		postalCodeInputAdress.setValueAttribute(postalCodeJoseFaria);
 		HtmlInput localityInputAdress = addCustomerForm.getInputByName("locality");
-		vatInput.setValueAttribute(localityCodeJoseFaria);
+		localityInputAdress.setValueAttribute(localityCodeJoseFaria);
 
 		//o butão não tem name 
 		HtmlInput insert = addCustomerForm.getInputByValue("Insert");
-		HtmlPage reportPageAdress = null;
+		HtmlPage reportPageAddress = null;
 		try {
-			reportPageAdress = insert.click();
+			reportPageAddress = insert.click();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("não deu submit");
 		}
 
+		String reportPageAddressText = reportPageAddress.asText();
+		assertTrue(reportPageAddressText.contains(vatJoseFaria));
+		assertTrue(reportPageAddressText.contains(ruaJoseFaria));
+		assertTrue(reportPageAddressText.contains(doorJoseFaria));
+		assertTrue(reportPageAddressText.contains(postalCodeJoseFaria));
+		assertTrue(reportPageAddressText.contains(localityCodeJoseFaria));
 		HtmlPage report = null;
+
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
 			java.net.URL url = null;
 			try {
@@ -201,10 +207,13 @@ public class HtmlUnitNarratives {
 			e.printStackTrace();
 		}
 		assertEquals("Customers Info", listingAllCustomersPage.getTitleText());
+		String nome = null ,phone = null, vat = null;
 
 		if(listingAllCustomersPage.asXml().contains("<table")) {
 			//obter o nome do 1º elemento
-			String nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
+			nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
+			phone = listingAllCustomersPage.getByXPath("//tr[2]/td[2]/text()").get(0).toString();
+			vat = listingAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
 		}
 
 
@@ -220,16 +229,19 @@ public class HtmlUnitNarratives {
 
 		HtmlForm insertCustomerForm = insertCustomerPage.getForms().get(0);
 		HtmlInput vatInput = insertCustomerForm.getInputByName("vat");
-		vatInput.setValueAttribute(vatJoseFaria);
+		vatInput.setValueAttribute(vat);
 		HtmlInput designationInput = insertCustomerForm.getInputByName("designation");
-		vatInput.setValueAttribute(nomeJoseFaria);
+		designationInput.setValueAttribute(nome);
 		HtmlInput phoneInput = insertCustomerForm.getInputByName("phone");
-		vatInput.setValueAttribute(telJoseFaria);
+		phoneInput.setValueAttribute(phone);
+
+		// FAZER AQUI A VERIFICAÇÃO PARA NÃO ESQUECER VOU PÔR AQUI UMA ASNEIRA CARALHO
 
 
 		HtmlInput getCustomer = insertCustomerForm.getInputByName("submit");
+		HtmlPage getCustomerSubmit = null;
 		try {
-			HtmlPage getCustomerSubmit = getCustomer.click();
+			getCustomerSubmit = getCustomer.click();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -244,9 +256,9 @@ public class HtmlUnitNarratives {
 			}
 			WebRequest requestSettings = new WebRequest(url,HttpMethod.POST);
 			requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
-			requestSettings.getRequestParameters().add(new NameValuePair("vat", vatJoseFaria));
-			requestSettings.getRequestParameters().add(new NameValuePair("designation", nomeJoseFaria));
-			requestSettings.getRequestParameters().add(new NameValuePair("phone", telJoseFaria));
+			requestSettings.getRequestParameters().add(new NameValuePair("vat", vat));
+			requestSettings.getRequestParameters().add(new NameValuePair("designation", nome));
+			requestSettings.getRequestParameters().add(new NameValuePair("phone", phone));
 			requestSettings.getRequestParameters().add(new NameValuePair("submit", "Get+Customer"));
 
 			try {
@@ -264,22 +276,22 @@ public class HtmlUnitNarratives {
 		}
 		Object mensagemErroSuposta = "It was not possible to fulfill the request: Can't add customer with vat number "+vatJoseFaria+".";
 		assertTrue(mensagemErro.get(0).toString().equals(mensagemErroSuposta));
-		
+
 		//o erro vai para o controller AddCustomerPageController
 
 	}
 
 	@Test
 	public void createAndRemoveCustomer() {
-		
+
 		final String vatNewCustomer = "123456789";
 		final String designationNewCustomer = "Manuel Ferreira";
 		final String phoneNewCustomer = "912345678";
-		
+
 		assertEquals("WebAppDemo Menu", page.getTitleText());
-		
+
 		HtmlAnchor addCustomer = page.getAnchorByHref("addCustomer.html");
-		
+
 		HtmlPage addCustomerPage = null;
 		try {
 			addCustomerPage = (HtmlPage)addCustomer.openLinkInNewWindow();
@@ -288,33 +300,32 @@ public class HtmlUnitNarratives {
 			System.err.println("link para a pagina errada");
 		}
 		assertEquals("Enter Name", addCustomerPage.getTitleText());
-		
+
 		HtmlForm addCustomerForm = addCustomerPage.getForms().get(0);
-		
+
 		HtmlInput vatInput = addCustomerForm.getInputByName("vat");
 		vatInput.setValueAttribute(vatNewCustomer);
-		
+
 		HtmlInput designationInput = addCustomerForm.getInputByName("designation");
 		designationInput.setValueAttribute(designationNewCustomer);
-		
+
 		HtmlInput phoneInput = addCustomerForm.getInputByName("phone");
 		phoneInput.setValueAttribute(phoneNewCustomer);
-		
+
 		HtmlInput submit = addCustomerForm.getInputByName("submit");
 		HtmlPage reportPage = null;
-		
+
 		try {
 			reportPage = submit.click();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		String textReportPage = reportPage.asText();
 		assertTrue(textReportPage.contains(vatNewCustomer));
 		assertTrue(textReportPage.contains(designationNewCustomer));
 		assertTrue(textReportPage.contains(phoneNewCustomer));
-		
-		
+
 		HtmlPage report = null;
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
 			java.net.URL url = null;
@@ -338,15 +349,255 @@ public class HtmlUnitNarratives {
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println(report.asXml());
-		
-		
 
-		
-		
+		HtmlAnchor removeCustomerLink = page.getAnchorByHref("RemoveCustomerPageController");
+		HtmlPage removeCustomerPage = null;
+		try {
+			removeCustomerPage = (HtmlPage) removeCustomerLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		// check if title is the one expected
+		assertEquals("Enter VatNumber", removeCustomerPage.getTitleText());
+
+		HtmlForm removeCustomerForm = removeCustomerPage.getForms().get(0);
+
+		HtmlInput vatInputRemove = addCustomerForm.getInputByName("vat");
+		vatInput.setValueAttribute(vatNewCustomer);
+
+		HtmlInput remove = addCustomerForm.getInputByName("submit");
+		HtmlPage reportPageRemove = null ;
+		try {
+			reportPageRemove = remove.click();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String textReportPageRemove = reportPageRemove.asText();
+		assertTrue(textReportPage.contains(vatNewCustomer));
+
+		HtmlPage reportRemove = null;
+		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
+			java.net.URL url = null;
+			try {
+				url = new java.net.URL(APPLICATION_URL+"RemoveCustomerPageController");
+			} catch (MalformedURLException e) {
+				System.err.println("Pagina inexistente " + e.getMessage());
+			}
+			WebRequest requestSettings = new WebRequest(url,HttpMethod.GET);
+			requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
+			requestSettings.getRequestParameters().add(new NameValuePair("vat", vatNewCustomer));
+			requestSettings.getRequestParameters().add(new NameValuePair("submit", "Get+Customer"));
+
+			try {
+				reportRemove = webClient.getPage(requestSettings);
+			} catch (FailingHttpStatusCodeException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		HtmlAnchor listAllCustomersLink = page.getAnchorByHref("GetAllCustomersPageController");
+		HtmlPage listAllCustomersPage = null;
+		try {
+			listAllCustomersPage = (HtmlPage) listAllCustomersLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		assertEquals("Customers Info", listAllCustomersPage.getTitleText());
+
+		if (listAllCustomersPage.asXml().contains("<table")) {
+
+			assertFalse(listAllCustomersPage.asXml().contains(vatNewCustomer));
+
+		}
 	}
 
+	@Test
+	public void NewSaleForExistingCustomerWithDelivery() {
+		assertEquals("WebAppDemo Menu", page.getTitleText());
+
+		HtmlAnchor listAllCustomersLink = page.getAnchorByHref("GetAllCustomersPageController");
+		HtmlPage listAllCustomersPage = null;
+		try {
+			listAllCustomersPage = (HtmlPage) listAllCustomersLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		assertEquals("Customers Info", listAllCustomersPage.getTitleText());
+		assumeTrue(listAllCustomersPage.asXml().contains("<table"));
+		String vat = listAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
+
+		int numeroSalesAntes = getCustomerSalesTotalByVAT(vat,page);
+
+		HtmlAnchor newSaleLink = page.getAnchorByHref("addSale.html");
+		HtmlPage newSalePage = null;
+		try {
+			newSalePage = (HtmlPage) newSaleLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		assertEquals("New Sale", newSalePage.getTitleText());
+		HtmlForm newSaleForm = newSalePage.getForms().get(0);
+		HtmlInput vatInputNewSale = newSaleForm.getInputByName("customerVat");
+		vatInputNewSale.setValueAttribute(vat);
+
+		HtmlInput getSale = newSaleForm.getInputByValue("Add Sale");
+		HtmlPage getSaleSubmit = null;
+		try {
+			getSaleSubmit = getSale.click();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String textSaleSubmit = getSaleSubmit.asText();
+		assertTrue(textSaleSubmit.contains(vat));
+		
+		HtmlPage reportPage = null;
+		String formData = String.format("vat=%s", vat);
+		WebRequest req = null;
+		try {
+			req = new WebRequest(new java.net.URL(APPLICATION_URL+"AddSalePageController"),
+					HttpMethod.POST);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		req.setRequestBody(formData);
+		WebClient webClient = null;
+		
+		try { 
+			webClient = new WebClient(BrowserVersion.getDefault());
+			reportPage = (HtmlPage) webClient.getPage(req);
+		} catch (FailingHttpStatusCodeException | IOException e) {
+			e.printStackTrace();
+		}
+		String textReportPage = reportPage.asText();
+		assertTrue(textReportPage.contains(vat));
+		assertEquals("Sales Info", reportPage.getTitleText());
+		assertTrue(reportPage.asXml().contains("<table"));
+		List<HtmlElement> items = reportPage.getByXPath("//tr");
+		
+		webClient.close();
+		assertTrue(numeroSalesAntes==items.size());
+		
+		
+		
+		HtmlAnchor saleDeliveryLink = page.getAnchorByHref("saleDeliveryVat.html");
+		HtmlPage saleDeliveryPage = null;
+		try {
+			saleDeliveryPage = (HtmlPage) saleDeliveryLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		assertEquals("Enter Name", saleDeliveryPage.getTitleText());
+		HtmlForm saleDeliveryForm = saleDeliveryPage.getForms().get(0);
+		HtmlInput vatInputSaleDelivery = newSaleForm.getInputByName("vat");
+		vatInputSaleDelivery.setValueAttribute(vat);
+
+		HtmlInput getDelivery = saleDeliveryForm.getInputByValue("Get Customer");
+		HtmlPage getDeliverySubmit = null;
+		try {
+			getDeliverySubmit = getDelivery.click();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String textDeliverySubmit = getDeliverySubmit.asText();
+		assertTrue(textDeliverySubmit.contains(vat));
+		//-------------------
+		
+		
+		HtmlPage reportPageDelivery = null;
+		String formDataDelivery = String.format("vat=%s", vat);
+		WebRequest reqDelivery = null;
+		try {
+			reqDelivery = new WebRequest(new java.net.URL(APPLICATION_URL+"AddSaleDeliveryPageController"),
+					HttpMethod.POST);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		reqDelivery.setRequestBody(formDataDelivery);
+		WebClient webClientDelivery = null;
+		
+		try { 
+			webClientDelivery = new WebClient(BrowserVersion.getDefault());
+			reportPageDelivery = (HtmlPage) webClientDelivery.getPage(req);
+		} catch (FailingHttpStatusCodeException | IOException e) {
+			e.printStackTrace();
+		}
+		String textReportPageDelivery = reportPageDelivery.asText();
+		
+		assertTrue(textReportPageDelivery.contains(vat));
+		assertEquals("Enter Name", reportPageDelivery.getTitleText());
+		
+		HtmlForm reportPageDeliveryForm = reportPageDelivery.getForms().get(0);
+		
+		HtmlInput vatInput = reportPageDeliveryForm.getInputByName("vat");
+		vatInput.setValueAttribute(vat);
+
+		/**
+		 * 
+		 * se não existir a tabela nesta pagina com os address criar um address
+		 * 
+		 */
+		
+		
+		
+		webClient.close();
+	}
+
+	private int getCustomerSalesTotalByVAT(String vat, HtmlPage page) {
+		HtmlAnchor salesListLink = page.getAnchorByHref("getSales.html");
+		HtmlPage salesListPage = null;
+		try {
+			salesListPage = (HtmlPage) salesListLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		assertEquals("Enter Name", salesListPage.getTitleText());
+		HtmlForm saleListForm = salesListPage.getForms().get(0);
+		HtmlInput vatInput = saleListForm.getInputByName("customerVat");
+		vatInput.setValueAttribute(vat);
+
+		HtmlInput getSale = saleListForm.getInputByValue("Add Sale");
+		HtmlPage getSaleSubmit = null;
+		try {
+			getSaleSubmit = getSale.click();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String textSaleSubmit = getSaleSubmit.asText();
+		assertTrue(textSaleSubmit.contains(vat));
+
+		HtmlPage reportPage = null;
+		String formData = String.format("vat=%s", vat);
+
+		WebRequest req = null;
+		try {
+			req = new WebRequest(new java.net.URL(APPLICATION_URL+"GetSalePageController"),
+					HttpMethod.GET);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		req.setRequestBody(formData);
+		WebClient webClient = null;
+		
+		try { 
+			webClient = new WebClient(BrowserVersion.getDefault());
+			reportPage = (HtmlPage) webClient.getPage(req);
+		} catch (FailingHttpStatusCodeException | IOException e) {
+			e.printStackTrace();
+		}
+		String textReportPage = reportPage.asText();
+		assertTrue(textReportPage.contains(vat));
+		assertEquals("Sales Info", reportPage.getTitleText());
+		
+		assumeTrue(reportPage.asXml().contains("<table"));
+		List<HtmlElement> items = reportPage.getByXPath("//tr");
+		
+		webClient.close();
+		return items.size()-1;
+	}
 
 
 
