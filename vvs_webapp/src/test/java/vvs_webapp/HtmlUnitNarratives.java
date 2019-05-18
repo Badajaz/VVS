@@ -263,7 +263,7 @@ public class HtmlUnitNarratives {
 			mensagemErro = report.getByXPath("//li/text ()");
 		}
 		Object mensagemErroSuposta = "It was not possible to fulfill the request: Can't add customer with vat number "+vatJoseFaria+".";
-		assertTrue(mensagemErro.get(0).equals(mensagemErroSuposta));
+		assertTrue(mensagemErro.get(0).toString().equals(mensagemErroSuposta));
 		
 		//o erro vai para o controller AddCustomerPageController
 
