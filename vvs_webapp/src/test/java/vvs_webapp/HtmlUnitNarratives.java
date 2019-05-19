@@ -19,7 +19,6 @@ import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -30,14 +29,6 @@ import com.gargoylesoftware.htmlunit.util.NameValuePair;
 public class HtmlUnitNarratives {
 
 	private static final String APPLICATION_URL = "http://localhost:8080/VVS_webappdemo/";
-	private static final String idJoseFaria = "1";
-	private static final String telJoseFaria = "914276732";
-	private static final String nomeJoseFaria = "JOSE FARIA";
-	private static final String vatJoseFaria = "197672337";
-	private static final String ruaJoseFaria = "Rua do Ouro";
-	private static final String doorJoseFaria = "12";
-	private static final String postalCodeJoseFaria = "1600-477";
-	private static final String localityCodeJoseFaria = "Lisboa";
 
 
 	private static HtmlPage page;
@@ -79,6 +70,10 @@ public class HtmlUnitNarratives {
 			e.printStackTrace();
 			System.err.println("link para a pagina errada");
 		}
+		String[] customerInfo = getFirstCustomerInfo();
+		String nomeJoseFaria = customerInfo[0];
+		String vatJoseFaria = customerInfo[2];
+		
 		assertEquals("Enter Name", customerByVATPage.getTitleText());
 		HtmlForm customerByVATForm = customerByVATPage.getForms().get(0);
 		HtmlInput vatInput = customerByVATForm.getInputByName("vat");
@@ -129,10 +124,16 @@ public class HtmlUnitNarratives {
 
 		assertEquals("Enter Address", addAddressToCustomerPage.getTitleText());
 
+		String ruaJoseFaria = "Rua do Ouro";
+		String doorJoseFaria = "12";
+		String postalCodeJoseFaria = "1600-477";
+		String localityCodeJoseFaria = "Lisboa";
+		
 		HtmlForm addCustomerForm = addAddressToCustomerPage.getForms().get(0);
 		HtmlInput vatInputAdress = addCustomerForm.getInputByName("vat");
 		vatInputAdress.setValueAttribute(vatJoseFaria);
 		HtmlInput adressInputAdress = addCustomerForm.getInputByName("address");
+		
 		adressInputAdress.setValueAttribute(ruaJoseFaria);
 		HtmlInput doorInputAdress = addCustomerForm.getInputByName("door");
 		doorInputAdress.setValueAttribute(doorJoseFaria);
@@ -253,12 +254,13 @@ public class HtmlUnitNarratives {
 				e.printStackTrace();
 			}
 		}
+		
 		List<Object> mensagemErro = null;
 		if(report.asXml().contains("<li>")) {
 			//obter o nome do 1º elemento
 			mensagemErro = report.getByXPath("//li/text ()");
 		}
-		Object mensagemErroSuposta = "It was not possible to fulfill the request: Can't add customer with vat number "+vatJoseFaria+".";
+		Object mensagemErroSuposta = "It was not possible to fulfill the request: Can't add customer with vat number "+vat+".";
 		assertTrue(mensagemErro.get(0).toString().equals(mensagemErroSuposta));
 
 		//o erro vai para o controller AddCustomerPageController
@@ -529,7 +531,7 @@ public class HtmlUnitNarratives {
 		HtmlInput vatInput = saleListForm.getInputByName("customerVat");
 		vatInput.setValueAttribute(vat);
 
-		HtmlInput getSale = saleListForm.getInputByValue("Add Sale");
+		HtmlInput getSale = saleListForm.getInputByValue("Get Sales");
 		HtmlPage getSaleSubmit = null;
 		try {
 			getSaleSubmit = getSale.click();
@@ -572,7 +574,7 @@ public class HtmlUnitNarratives {
 	// @return 0 - nome, 1 - phone, 2 - vat
 
 	private String [] getFirstCustomerInfo() {
-		HtmlAnchor listAllCustomersLink = page.getAnchorByHref("GetAllCustomersPageController");
+		HtmlAnchor listAllCustomersLink	 = page.getAnchorByHref("GetAllCustomersPageController");
 		HtmlPage listAllCustomersPage = null;
 		try {
 			listAllCustomersPage = (HtmlPage) listAllCustomersLink.openLinkInNewWindow();
