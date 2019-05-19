@@ -341,6 +341,8 @@ public class HtmlUnitNarratives {
 			assertFalse(listAllCustomersPage.asXml().contains(vatNewCustomer));
 		}
 	}
+	
+	/*
 	@Test
 	public void NewSaleForExistingCustomerWithDelivery() {
 		assertEquals("WebAppDemo Menu", page.getTitleText());
@@ -451,17 +453,17 @@ public class HtmlUnitNarratives {
 
 		HtmlInput vatInput = reportPageDeliveryForm.getInputByName("vat");
 		vatInput.setValueAttribute(vat);
-
+*/
 		/**
 	 * 
 	 * se não existir a tabela nesta pagina com os address criar um address
 	 * 
 	 */
 
-
+/*
 	
 		webClient.close();
-	}
+	}*/
 
 	private int getCustomerSalesTotalByVAT(String vat, HtmlPage page) {
 		HtmlAnchor salesListLink = page.getAnchorByHref("getSales.html");
