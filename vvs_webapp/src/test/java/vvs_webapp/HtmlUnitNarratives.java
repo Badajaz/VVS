@@ -587,10 +587,4 @@ public class HtmlUnitNarratives {
 		firstCustomerInfo [2] = listAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
 		return firstCustomerInfo;
 	}
-
-
-
-
-
-
 }
