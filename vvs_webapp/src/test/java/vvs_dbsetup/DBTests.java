@@ -2,7 +2,7 @@ package vvs_dbsetup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static vvs_dbsetup.DBSetupUtils.DB_PASSWORD;
 import static vvs_dbsetup.DBSetupUtils.DB_URL;
 import static vvs_dbsetup.DBSetupUtils.DB_USERNAME;
@@ -24,7 +24,6 @@ import com.ninja_squad.dbsetup.destination.Destination;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
 
-import webapp.services.AddressDTO;
 import webapp.services.ApplicationException;
 import webapp.services.CustomerDTO;
 import webapp.services.CustomerService;
@@ -32,7 +31,6 @@ import webapp.services.CustomersDTO;
 import webapp.services.SaleDTO;
 import webapp.services.SaleDeliveryDTO;
 import webapp.services.SaleService;
-import webapp.services.SalesDTO;
 
 public class DBTests {
 	private static Destination dataSource;
@@ -64,10 +62,11 @@ public class DBTests {
 
 	@Test
 	public void updateCustomerContact() throws ApplicationException {
+		
+		final int newPhoneNumber = 913885916;
 		CustomerService service = CustomerService.INSTANCE;
-		int vat = 197672337;
-		int newPhoneNumber = 913885916;
-
+		CustomerDTO customer = service.getAllCustomers().customers.get(0);
+		int vat = customer.vat;
 		int previousPhone = service.getCustomerByVat(vat).phoneNumber;
 		service.updateCustomerPhone(vat, newPhoneNumber);
 		int currentPhone = service.getCustomerByVat(vat).phoneNumber;
@@ -116,25 +115,24 @@ public class DBTests {
 
 	@Test
 	public void testIfAddingDeliveryIncreasesTheirSizeByOne() throws ApplicationException {
-		
+
 		CustomersDTO listaCustomers = CustomerService.INSTANCE.getAllCustomers();
 		int vatCustomer =  listaCustomers.customers.get(0).vat;
 		System.out.println("vatCustomer = "+vatCustomer);
 		List<SaleDTO> sales = SaleService.INSTANCE.getSaleByCustomerVat(vatCustomer).sales;
+		assumeTrue(sales.size() != 0);
 		System.out.println(sales);
-		if (sales.size() != 0) {
-			int saleId = sales.get(0).id;
-			List<SaleDeliveryDTO> salesDelivery = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-			System.out.println("salesDelivery "+salesDelivery.size());
-			int adress = CustomerService.INSTANCE.getAllAddresses(vatCustomer).addrs.get(0).id;
-			System.out.println("adress "+adress);
-			SaleService.INSTANCE.addSaleDelivery(saleId, adress);
-			List<SaleDeliveryDTO> salesDelivery2 = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-			System.out.println("salesDelivery2 "+salesDelivery.size());
-			assertEquals(salesDelivery.size()+1,salesDelivery2);
-		}
-		
-		
+		int saleId = sales.get(0).id;
+		List<SaleDeliveryDTO> salesDelivery = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
+		System.out.println("salesDelivery "+salesDelivery.size());
+		int adress = CustomerService.INSTANCE.getAllAddresses(vatCustomer).addrs.get(0).id;
+		System.out.println("adress "+adress);
+		SaleService.INSTANCE.addSaleDelivery(saleId, adress);
+		List<SaleDeliveryDTO> salesDelivery2 = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
+		System.out.println("salesDelivery2 "+salesDelivery.size());
+		assertEquals(salesDelivery.size()+1,salesDelivery2);
+
+
 	}
 
 
