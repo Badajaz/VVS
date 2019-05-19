@@ -60,6 +60,11 @@ public class HtmlUnitNarratives {
 		}
 	}
 
+	
+	/**
+	 * Caso para inserir um nova morada um utilizador já existente. 
+	 */
+	
 	@Test
 	public void insertNewAddressForExistingCustomer() {
 
@@ -142,20 +147,23 @@ public class HtmlUnitNarratives {
 
 		//o butão não tem name 
 		HtmlInput insert = addCustomerForm.getInputByValue("Insert");
-		HtmlPage reportPageAddress = null;
-		try {
+		
+		//HtmlPage reportPageAddress = null;
+		/*try {
 			reportPageAddress = insert.click();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("não deu submit");
 		}
+		System.out.println(reportPageAddress.asText());
 
 		String reportPageAddressText = reportPageAddress.asText();
 		assertTrue(reportPageAddressText.contains(vatJoseFaria));
 		assertTrue(reportPageAddressText.contains(ruaJoseFaria));
 		assertTrue(reportPageAddressText.contains(doorJoseFaria));
 		assertTrue(reportPageAddressText.contains(postalCodeJoseFaria));
-		assertTrue(reportPageAddressText.contains(localityCodeJoseFaria));
+		assertTrue(reportPageAddressText.contains(localityCodeJoseFaria));*/
+		
 		HtmlPage report = null;
 
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
@@ -182,7 +190,8 @@ public class HtmlUnitNarratives {
 				e.printStackTrace();
 			}
 		}
-		assertTrue(reportPage.asXml().contains(nomeJoseFaria));
+		assertTrue(report.asXml().contains(nomeJoseFaria));
+	
 
 		int adressCount2 = 0; 
 
@@ -190,7 +199,7 @@ public class HtmlUnitNarratives {
 			List<HtmlElement> items = report.getByXPath("//tr");
 			adressCount2 = items.size()-1;
 		}
-
+		System.out.println("adressCount = "+adressCount);
 		System.out.println("adressCount2 = "+adressCount2);
 		assertEquals(adressCount2, adressCount+1);
 	}
