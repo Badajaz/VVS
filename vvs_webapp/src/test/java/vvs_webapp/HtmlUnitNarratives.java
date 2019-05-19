@@ -543,7 +543,7 @@ public class HtmlUnitNarratives {
 		assertTrue(textSaleSubmit.contains(vat));
 
 		HtmlPage reportPage = null;
-		String formData = String.format("vat=%s", vat);
+		String formData = String.format("customerVat=%s", vat);
 
 		WebRequest req = null;
 		try {
@@ -555,6 +555,7 @@ public class HtmlUnitNarratives {
 		req.setRequestBody(formData);
 		WebClient webClient = null;
 
+		
 		try { 
 			webClient = new WebClient(BrowserVersion.getDefault());
 			reportPage = (HtmlPage) webClient.getPage(req);
