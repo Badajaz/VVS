@@ -60,11 +60,11 @@ public class HtmlUnitNarratives {
 		}
 	}
 
-	
+
 	/**
 	 * Caso para inserir um nova morada um utilizador já existente. 
 	 */
-	
+
 	@Test
 	public void insertNewAddressForExistingCustomer() {
 
@@ -85,8 +85,8 @@ public class HtmlUnitNarratives {
 		vatInput.setValueAttribute(vatJoseFaria);
 		HtmlInput submit = customerByVATForm.getInputByName("submit");
 		HtmlPage resultado = null;
-	
-		
+
+
 		String textReportPage = customerByVATPage.asText();
 		assertTrue(textReportPage.contains(vatJoseFaria));
 
@@ -151,7 +151,7 @@ public class HtmlUnitNarratives {
 		assertTrue(reportPageAddressText.contains(doorJoseFaria));
 		assertTrue(reportPageAddressText.contains(postalCodeJoseFaria));
 		assertTrue(reportPageAddressText.contains(localityCodeJoseFaria));
-		
+
 		HtmlPage report = null;
 
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
@@ -179,7 +179,7 @@ public class HtmlUnitNarratives {
 			}
 		}
 		assertTrue(report.asXml().contains(nomeJoseFaria));
-	
+
 
 		int adressCount2 = 0; 
 
@@ -196,23 +196,11 @@ public class HtmlUnitNarratives {
 	public void InsertExistingCustomerAndCheckIfReturnsError() {
 
 		assertEquals("WebAppDemo Menu", page.getTitleText());
-		HtmlAnchor listingAllCustomers = page.getAnchorByHref("GetAllCustomersPageController");
-		HtmlPage listingAllCustomersPage = null;
-		try {
-			listingAllCustomersPage = (HtmlPage) listingAllCustomers.openLinkInNewWindow();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		assertEquals("Customers Info", listingAllCustomersPage.getTitleText());
-		String nome = null ,phone = null, vat = null;
-
-		if(listingAllCustomersPage.asXml().contains("<table")) {
-			//obter o nome do 1º elemento
-			nome = listingAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
-			phone = listingAllCustomersPage.getByXPath("//tr[2]/td[2]/text()").get(0).toString();
-			vat = listingAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
-		}
-
+		
+		String[] customerInfo = getFirstCustomerInfo();
+		String nome = customerInfo[0];
+		String phone = customerInfo[1];
+		String vat = customerInfo[2];
 
 		HtmlAnchor insertCustomer = page.getAnchorByHref("addCustomer.html");
 		HtmlPage insertCustomerPage = null;
@@ -231,17 +219,17 @@ public class HtmlUnitNarratives {
 		designationInput.setValueAttribute(nome);
 		HtmlInput phoneInput = insertCustomerForm.getInputByName("phone");
 		phoneInput.setValueAttribute(phone);
-		
+
 		String insertCustomerPageText = insertCustomerPage.asText();
 
 		assertTrue(insertCustomerPageText.contains(vat));
 		assertTrue(insertCustomerPageText.contains(nome));
 		assertTrue(insertCustomerPageText.contains(phone));
-	
+
 
 		HtmlInput getCustomer = insertCustomerForm.getInputByName("submit");
-		
-		
+
+
 		HtmlPage report = null;
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
 			java.net.URL url = null;
@@ -410,16 +398,7 @@ public class HtmlUnitNarratives {
 	public void NewSaleForExistingCustomerWithDelivery() {
 		assertEquals("WebAppDemo Menu", page.getTitleText());
 
-		HtmlAnchor listAllCustomersLink = page.getAnchorByHref("GetAllCustomersPageController");
-		HtmlPage listAllCustomersPage = null;
-		try {
-			listAllCustomersPage = (HtmlPage) listAllCustomersLink.openLinkInNewWindow();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		assertEquals("Customers Info", listAllCustomersPage.getTitleText());
-		assumeTrue(listAllCustomersPage.asXml().contains("<table"));
-		String vat = listAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
+		String vat = getFirstCustomerInfo()[2];
 
 		int numeroSalesAntes = getCustomerSalesTotalByVAT(vat,page);
 
@@ -444,7 +423,7 @@ public class HtmlUnitNarratives {
 		}
 		String textSaleSubmit = getSaleSubmit.asText();
 		assertTrue(textSaleSubmit.contains(vat));
-		
+
 		HtmlPage reportPage = null;
 		String formData = String.format("vat=%s", vat);
 		WebRequest req = null;
@@ -456,7 +435,7 @@ public class HtmlUnitNarratives {
 		}
 		req.setRequestBody(formData);
 		WebClient webClient = null;
-		
+
 		try { 
 			webClient = new WebClient(BrowserVersion.getDefault());
 			reportPage = (HtmlPage) webClient.getPage(req);
@@ -468,12 +447,12 @@ public class HtmlUnitNarratives {
 		assertEquals("Sales Info", reportPage.getTitleText());
 		assertTrue(reportPage.asXml().contains("<table"));
 		List<HtmlElement> items = reportPage.getByXPath("//tr");
-		
+
 		webClient.close();
 		assertTrue(numeroSalesAntes==items.size());
-		
-		
-		
+
+
+
 		HtmlAnchor saleDeliveryLink = page.getAnchorByHref("saleDeliveryVat.html");
 		HtmlPage saleDeliveryPage = null;
 		try {
@@ -496,8 +475,8 @@ public class HtmlUnitNarratives {
 		String textDeliverySubmit = getDeliverySubmit.asText();
 		assertTrue(textDeliverySubmit.contains(vat));
 		//-------------------
-		
-		
+
+
 		HtmlPage reportPageDelivery = null;
 		String formDataDelivery = String.format("vat=%s", vat);
 		WebRequest reqDelivery = null;
@@ -509,7 +488,7 @@ public class HtmlUnitNarratives {
 		}
 		reqDelivery.setRequestBody(formDataDelivery);
 		WebClient webClientDelivery = null;
-		
+
 		try { 
 			webClientDelivery = new WebClient(BrowserVersion.getDefault());
 			reportPageDelivery = (HtmlPage) webClientDelivery.getPage(req);
@@ -517,12 +496,12 @@ public class HtmlUnitNarratives {
 			e.printStackTrace();
 		}
 		String textReportPageDelivery = reportPageDelivery.asText();
-		
+
 		assertTrue(textReportPageDelivery.contains(vat));
 		assertEquals("Enter Name", reportPageDelivery.getTitleText());
-		
+
 		HtmlForm reportPageDeliveryForm = reportPageDelivery.getForms().get(0);
-		
+
 		HtmlInput vatInput = reportPageDeliveryForm.getInputByName("vat");
 		vatInput.setValueAttribute(vat);
 
@@ -531,9 +510,9 @@ public class HtmlUnitNarratives {
 		 * se não existir a tabela nesta pagina com os address criar um address
 		 * 
 		 */
-		
-		
-		
+
+
+
 		webClient.close();
 	}
 
@@ -572,7 +551,7 @@ public class HtmlUnitNarratives {
 		}
 		req.setRequestBody(formData);
 		WebClient webClient = null;
-		
+
 		try { 
 			webClient = new WebClient(BrowserVersion.getDefault());
 			reportPage = (HtmlPage) webClient.getPage(req);
@@ -582,12 +561,31 @@ public class HtmlUnitNarratives {
 		String textReportPage = reportPage.asText();
 		assertTrue(textReportPage.contains(vat));
 		assertEquals("Sales Info", reportPage.getTitleText());
-		
+
 		assumeTrue(reportPage.asXml().contains("<table"));
 		List<HtmlElement> items = reportPage.getByXPath("//tr");
-		
+
 		webClient.close();
 		return items.size()-1;
+	}
+
+	// @return 0 - nome, 1 - phone, 2 - vat
+
+	private String [] getFirstCustomerInfo() {
+		HtmlAnchor listAllCustomersLink = page.getAnchorByHref("GetAllCustomersPageController");
+		HtmlPage listAllCustomersPage = null;
+		try {
+			listAllCustomersPage = (HtmlPage) listAllCustomersLink.openLinkInNewWindow();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		assertEquals("Customers Info", listAllCustomersPage.getTitleText());
+		assumeTrue(listAllCustomersPage.asXml().contains("<table"));
+		String [] firstCustomerInfo= new String [3];
+		firstCustomerInfo [0] = listAllCustomersPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
+		firstCustomerInfo [1] = listAllCustomersPage.getByXPath("//tr[2]/td[2]/text()").get(0).toString();
+		firstCustomerInfo [2] = listAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
+		return firstCustomerInfo;
 	}
 
 
