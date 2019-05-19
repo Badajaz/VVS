@@ -25,19 +25,19 @@ public class SaleRowDataGateway {
 	 * Sale's total
 	 */
 	private Double total;
-	
+
 	/**
 	 * Sale's status
 	 */
 	private String statusId;
-	
+
 	/**
 	 * Sale's customer Vat
 	 */
 	private int customerVat;
-	
+
 	// Constants for conversion of status
-	
+
 	private static final String OPEN = "O";
 	private static final String CLOSED = "C";
 
@@ -45,23 +45,23 @@ public class SaleRowDataGateway {
 
 	//FOR TEST PURPOSE ONLY
 	//public CustomerRowDataGateway(int id, int vat, String designation, int phoneNumber) {
-		//this.id = id;
-		//this.vat = vat;
-		//this.designation = designation;
-		//this.phoneNumber = phoneNumber;
+	//this.id = id;
+	//this.vat = vat;
+	//this.designation = designation;
+	//this.phoneNumber = phoneNumber;
 	//}
-	
+
 	public SaleRowDataGateway(int customerVat, Date date) {
 		this.data = new java.sql.Date(date.getTime());
 		this.total = 0.0;
 		this.statusId = OPEN;
 		this.customerVat = customerVat;
 	}
-	
+
 	public SaleRowDataGateway() {
 	}
-	
-	
+
+
 	public SaleRowDataGateway(ResultSet rs) throws RecordNotFoundException {
 		try {
 			fillAttributes(rs.getDate("date"), rs.getInt("customer_vat"));
@@ -76,7 +76,7 @@ public class SaleRowDataGateway {
 		this.customerVat = customerVat;
 	}
 
-	
+
 	// 2. getters and setters
 
 	public int getId() {
@@ -98,11 +98,11 @@ public class SaleRowDataGateway {
 	public SaleStatus getStatus() {
 		return toSaleStatus(statusId);
 	}
-	
+
 	private SaleStatus toSaleStatus(String statusId) {
 		return statusId.equals(OPEN) ? SaleStatus.OPEN : SaleStatus.CLOSED;
 	}
-	
+
 	public void setSaleStatus(SaleStatus salest) {
 		this.statusId = salest.equals(SaleStatus.OPEN) ? OPEN : CLOSED;
 	}
@@ -110,15 +110,15 @@ public class SaleRowDataGateway {
 	public int getCustomerVat() {
 		return customerVat;
 	}
-	
+
 	/**
 	 * The insert customer SQL statement
 	 */
-	
-	
+
+
 	private static final String INSERT_SALE_SQL = 
 			"insert into sale (id, date, total, status, customer_vat) " +
-			"values (DEFAULT, ?, ?, ?, ?)";
+					"values (DEFAULT, ?, ?, ?, ?)";
 	// 3. interaction with the repository (a memory map in this simple example)
 
 	/**
@@ -137,8 +137,8 @@ public class SaleRowDataGateway {
 			throw new PersistenceException("Internal error!", e);
 		}
 	}
-	
-	
+
+
 	private static SaleRowDataGateway loadSale(ResultSet rs) throws RecordNotFoundException{
 		try {
 			SaleRowDataGateway newSale = new SaleRowDataGateway(rs.getInt("customer_vat"), rs.getDate("date"));
@@ -149,10 +149,10 @@ public class SaleRowDataGateway {
 			throw new RecordNotFoundException ("SaleProduct does not exist", e);
 		}
 	}
-	
+
 	private static final String GET_SALE_BY_CUSTOMERS_VAT_SQL = 
-			   "select * from sale where customer_vat = ?";
-	
+			"select * from sale where customer_vat = ?";
+
 	public List<SaleRowDataGateway> getAllSales(int vat) throws PersistenceException {
 		List<SaleRowDataGateway> sales = new ArrayList<SaleRowDataGateway>();
 		try (PreparedStatement statement = DataSource.INSTANCE.prepare(GET_SALE_BY_CUSTOMERS_VAT_SQL)){
@@ -168,10 +168,10 @@ public class SaleRowDataGateway {
 			throw new PersistenceException("Internal error getting a customer by its VAT number", e);
 		}
 	}
-	
+
 	private static final String GET_ALL_SALES_SQL = 
-			   "select * from sale";
-	
+			"select * from sale";
+
 	public List<SaleRowDataGateway> getAllSales() throws PersistenceException {
 		List<SaleRowDataGateway> sales = new ArrayList<SaleRowDataGateway>();
 		try (PreparedStatement statement = DataSource.INSTANCE.prepare(GET_ALL_SALES_SQL)){
@@ -186,15 +186,15 @@ public class SaleRowDataGateway {
 			throw new PersistenceException("Internal error getting a customer by its VAT number", e);
 		}
 	}
-	
+
 	/**
 	 * The update customerPhone SQL statement
 	 */
 	private static final String	UPDATE_STATUS_SQL =
 			"update sale " +
-					   "set status = ? " +
-					   "where id = ?";
-	
+					"set status = ? " +
+					"where id = ?";
+
 	public void updateSale () throws PersistenceException {
 		try (PreparedStatement statement = DataSource.INSTANCE.prepare(UPDATE_STATUS_SQL)){
 			// set statement arguments
@@ -206,14 +206,14 @@ public class SaleRowDataGateway {
 			throw new PersistenceException("Internal error updating Status " + id + ".", e);
 		}
 	}
-	
+
 	/**
 	 * The update customerPhone SQL statement
 	 */
 	private static final String	GET_SALE_BY_ID_SQL =
 			"select * from sale " +
-					   "where id = ?";
-	
+					"where id = ?";
+
 	public SaleRowDataGateway getSaleById (int id) throws PersistenceException {
 		try (PreparedStatement statement = DataSource.INSTANCE.prepare(GET_SALE_BY_ID_SQL)){
 			// set statement arguments
@@ -227,6 +227,25 @@ public class SaleRowDataGateway {
 			throw new PersistenceException("Internal error updating customer " + id + ".", e);
 		}
 	}
-	
-		
+
+
+	private static final String	DELETE_SALE_BY_ID_SQL =
+			"delete * from sale " +
+					"where id = ?";
+
+
+	public void deleteSaleById (int id) throws PersistenceException {
+		try (PreparedStatement statement = DataSource.INSTANCE.prepare(DELETE_SALE_BY_ID_SQL)){
+			// set statement arguments
+			statement.setInt(1, id);
+			SaleDeliveryRowDataGateway sd = 
+			statement.executeUpdate();
+			
+			// execute SQL
+		} catch (SQLException e) {
+			throw new PersistenceException("Internal error deleting sale " + id + ".", e);
+		}
+	}
+
+
 }

@@ -129,4 +129,25 @@ public class AddressRowDataGateway{
 		}
 	}
 	
+	private static final String	DELETE_ADDRESS_BY_CUSTOMER_VAT_SQL =
+			"DELETE * " +
+				"from address " +
+				"where customer_Vat = ?";
+	
+	public void deleteAddressByCustomerVat (int vat) throws PersistenceException {
+		
+		try (PreparedStatement statement = DataSource.INSTANCE.prepare(DELETE_ADDRESS_BY_CUSTOMER_VAT_SQL)){
+			// set statement arguments
+			statement.setInt(1, vat);
+			statement.executeUpdate();
+			// execute SQL
+		} catch (SQLException e) {
+			throw new PersistenceException("Internal error updating customer " + id + ".", e);
+		}
+	}
+	
+	
+	
+	
+	
 }

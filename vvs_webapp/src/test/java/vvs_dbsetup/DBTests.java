@@ -8,6 +8,8 @@ import static vvs_dbsetup.DBSetupUtils.DB_URL;
 import static vvs_dbsetup.DBSetupUtils.DB_USERNAME;
 import static vvs_dbsetup.DBSetupUtils.DELETE_ALL;
 import static vvs_dbsetup.DBSetupUtils.INSERT_CUSTOMER_ADDRESS_DATA;
+import static vvs_dbsetup.DBSetupUtils.INSERT_CUSTOMER_SALE_DATA;
+
 import static vvs_dbsetup.DBSetupUtils.startApplicationDatabaseForTesting;
 
 import java.sql.SQLException;
@@ -50,6 +52,7 @@ public class DBTests {
 		Operation initDBOperations = Operations.sequenceOf(
 				DELETE_ALL
 				, INSERT_CUSTOMER_ADDRESS_DATA
+				, INSERT_CUSTOMER_SALE_DATA
 				);
 
 		DbSetup dbSetup = new DbSetup(dataSource, initDBOperations);
@@ -117,20 +120,24 @@ public class DBTests {
 	public void testIfAddingDeliveryIncreasesTheirSizeByOne() throws ApplicationException {
 
 		CustomersDTO listaCustomers = CustomerService.INSTANCE.getAllCustomers();
-		int vatCustomer =  listaCustomers.customers.get(0).vat;
-		System.out.println("vatCustomer = "+vatCustomer);
-		List<SaleDTO> sales = SaleService.INSTANCE.getSaleByCustomerVat(vatCustomer).sales;
+		int vatCustomer = 0;
+		List<SaleDTO> sales = null;
+		int i = 0;
+		while(i != listaCustomers.customers.size() && (sales == null || sales.size() == 0)) {
+			 vatCustomer =  listaCustomers.customers.get(i).vat; 
+			 sales = SaleService.INSTANCE.getSaleByCustomerVat(vatCustomer).sales;
+			 i++;
+		}
 		assumeTrue(sales.size() != 0);
-		System.out.println(sales);
 		int saleId = sales.get(0).id;
-		List<SaleDeliveryDTO> salesDelivery = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-		System.out.println("salesDelivery "+salesDelivery.size());
+		int salesDeliverySize = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery.size();
+		System.out.println("salesDelivery "+salesDeliverySize);
 		int adress = CustomerService.INSTANCE.getAllAddresses(vatCustomer).addrs.get(0).id;
 		System.out.println("adress "+adress);
 		SaleService.INSTANCE.addSaleDelivery(saleId, adress);
 		List<SaleDeliveryDTO> salesDelivery2 = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-		System.out.println("salesDelivery2 "+salesDelivery.size());
-		assertEquals(salesDelivery.size()+1,salesDelivery2);
+		System.out.println("salesDelivery2 "+salesDelivery2.size());
+		assertEquals(salesDeliverySize+1,salesDelivery2.size());
 
 
 	}

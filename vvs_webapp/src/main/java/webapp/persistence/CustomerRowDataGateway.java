@@ -218,6 +218,7 @@ public class CustomerRowDataGateway {
 					   "where vatnumber = ?";
 	
 	public void removeCustomer () throws PersistenceException {
+		
 		try (PreparedStatement statement = DataSource.INSTANCE.prepare(REMOVE_CUSTOMER_BY_VAT)){
 			// set statement arguments
 			statement.setInt(1, vat);
