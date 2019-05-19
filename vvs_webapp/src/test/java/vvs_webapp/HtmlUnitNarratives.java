@@ -19,7 +19,6 @@ import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -576,7 +575,7 @@ public class HtmlUnitNarratives {
 	// @return 0 - nome, 1 - phone, 2 - vat
 
 	private String [] getFirstCustomerInfo() {
-		HtmlAnchor listAllCustomersLink = page.getAnchorByHref("GetAllCustomersPageController");
+		HtmlAnchor listAllCustomersLink	 = page.getAnchorByHref("GetAllCustomersPageController");
 		HtmlPage listAllCustomersPage = null;
 		try {
 			listAllCustomersPage = (HtmlPage) listAllCustomersLink.openLinkInNewWindow();
@@ -591,10 +590,4 @@ public class HtmlUnitNarratives {
 		firstCustomerInfo [2] = listAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
 		return firstCustomerInfo;
 	}
-
-
-
-
-
-
 }
