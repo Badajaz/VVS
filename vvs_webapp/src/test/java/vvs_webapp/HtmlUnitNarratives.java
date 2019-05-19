@@ -85,13 +85,9 @@ public class HtmlUnitNarratives {
 		vatInput.setValueAttribute(vatJoseFaria);
 		HtmlInput submit = customerByVATForm.getInputByName("submit");
 		HtmlPage resultado = null;
-		try {
-			resultado  = submit.click();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.err.println("não deu submit");
-		}
-		String textReportPage = resultado.asText();
+	
+		
+		String textReportPage = customerByVATPage.asText();
 		assertTrue(textReportPage.contains(vatJoseFaria));
 
 		HtmlPage reportPage = null;
@@ -147,22 +143,14 @@ public class HtmlUnitNarratives {
 
 		//o butão não tem name 
 		HtmlInput insert = addCustomerForm.getInputByValue("Insert");
-		
-		//HtmlPage reportPageAddress = null;
-		/*try {
-			reportPageAddress = insert.click();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.err.println("não deu submit");
-		}
-		System.out.println(reportPageAddress.asText());
 
-		String reportPageAddressText = reportPageAddress.asText();
+
+		String reportPageAddressText = addAddressToCustomerPage.asText();
 		assertTrue(reportPageAddressText.contains(vatJoseFaria));
 		assertTrue(reportPageAddressText.contains(ruaJoseFaria));
 		assertTrue(reportPageAddressText.contains(doorJoseFaria));
 		assertTrue(reportPageAddressText.contains(postalCodeJoseFaria));
-		assertTrue(reportPageAddressText.contains(localityCodeJoseFaria));*/
+		assertTrue(reportPageAddressText.contains(localityCodeJoseFaria));
 		
 		HtmlPage report = null;
 
@@ -243,18 +231,17 @@ public class HtmlUnitNarratives {
 		designationInput.setValueAttribute(nome);
 		HtmlInput phoneInput = insertCustomerForm.getInputByName("phone");
 		phoneInput.setValueAttribute(phone);
+		
+		String insertCustomerPageText = insertCustomerPage.asText();
 
-		// FAZER AQUI A VERIFICAÇÃO PARA NÃO ESQUECER VOU PÔR AQUI UMA ASNEIRA CARALHO
-
+		assertTrue(insertCustomerPageText.contains(vat));
+		assertTrue(insertCustomerPageText.contains(nome));
+		assertTrue(insertCustomerPageText.contains(phone));
+	
 
 		HtmlInput getCustomer = insertCustomerForm.getInputByName("submit");
-		HtmlPage getCustomerSubmit = null;
-		try {
-			getCustomerSubmit = getCustomer.click();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
+		
+		
 		HtmlPage report = null;
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
 			java.net.URL url = null;
@@ -375,15 +362,10 @@ public class HtmlUnitNarratives {
 		vatInput.setValueAttribute(vatNewCustomer);
 
 		HtmlInput remove = addCustomerForm.getInputByName("submit");
-		HtmlPage reportPageRemove = null ;
-		try {
-			reportPageRemove = remove.click();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		String textReportPageRemove = reportPageRemove.asText();
-		assertTrue(textReportPage.contains(vatNewCustomer));
+
+		String textReportPageRemove = removeCustomerPage.asText();
+		assertTrue(textReportPageRemove.contains(vatNewCustomer));
 
 		HtmlPage reportRemove = null;
 		try(final WebClient webClient = new WebClient(BrowserVersion.getDefault())){
