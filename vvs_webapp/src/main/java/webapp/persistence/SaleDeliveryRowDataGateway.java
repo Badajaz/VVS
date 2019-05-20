@@ -147,21 +147,20 @@ public class SaleDeliveryRowDataGateway {
 		}
 	}
 	
+	private static final String	DELETE_SALE_BY_SALE_ID_SQL =
+			"delete from saledelivery " +
+					"where id = ?";
 	
-	private static final String	DELETE_DELVERY_SALE_BY_SALE_ID_SQL =
-			"delete * from saledelivery " +
-					   "where sale_id = ?";
-	
-	
-	public void deleteDeliveryById (int saleid) throws PersistenceException {
-		try (PreparedStatement statement = DataSource.INSTANCE.prepare(DELETE_DELVERY_SALE_BY_SALE_ID_SQL)){
+	public void deleteDelivery() throws PersistenceException {
+		try (PreparedStatement statement = DataSource.INSTANCE.prepare(DELETE_SALE_BY_SALE_ID_SQL)){
 			// set statement arguments
-			statement.setInt(1, saleid);
+			statement.setInt(1, id);
 			statement.executeUpdate();
 			// execute SQL
 		} catch (SQLException e) {
 			throw new PersistenceException("Internal error deleting delivery " + id + ".", e);
 		}
+		
 	}
 	
 	

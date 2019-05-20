@@ -229,16 +229,16 @@ public class SaleRowDataGateway {
 	}
 
 
-	private static final String	DELETE_SALE_BY_ID_SQL =
-			"delete * from sale " +
-					"where id = ?";
 
 
-	public void deleteSaleById (int id) throws PersistenceException {
-		try (PreparedStatement statement = DataSource.INSTANCE.prepare(DELETE_SALE_BY_ID_SQL)){
+	private static final String	DELETE_SALE_BY_SALE_ID_SQL =
+			"delete from sale where id = ?";
+	
+	
+	public void deleteSale () throws PersistenceException {
+		try (PreparedStatement statement = DataSource.INSTANCE.prepare(DELETE_SALE_BY_SALE_ID_SQL)){
 			// set statement arguments
 			statement.setInt(1, id);
-			SaleDeliveryRowDataGateway sd = 
 			statement.executeUpdate();
 			
 			// execute SQL
@@ -246,6 +246,26 @@ public class SaleRowDataGateway {
 			throw new PersistenceException("Internal error deleting sale " + id + ".", e);
 		}
 	}
-
+	
+	/**
+	 * The update customerPhone SQL statement
+	 */
+	/*private static final String	REMOVE_CUSTOMER_BY_VAT =
+			"delete from customer " +
+					   "where vatnumber = ?";
+	
+	public void removeCustomer () throws PersistenceException {
+		try (PreparedStatement statement = DataSource.INSTANCE.prepare(REMOVE_CUSTOMER_BY_VAT)){
+			// set statement arguments
+			statement.setInt(1, vat);
+			// execute SQL
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new PersistenceException("Internal error updating customer " + id + ".", e);
+		}
+	}*/
+	
+	
+	
 
 }

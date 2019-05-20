@@ -132,4 +132,21 @@ public enum SaleService {
 			checkDigitCalc = 0;
 		return checkDigit == checkDigitCalc;
 	}
+
+	
+	public void removeSaleByVat(int vat) throws PersistenceException {
+		List<SaleDeliveryRowDataGateway> salesdelivery = new SaleDeliveryRowDataGateway().getAllSaleDelivery(vat);
+		List<SaleRowDataGateway> sales = new SaleRowDataGateway().getAllSales(vat);
+		for (SaleDeliveryRowDataGateway d : salesdelivery) {
+			d.deleteDelivery();
+		}
+		
+		for (SaleRowDataGateway s: sales) {
+			s.deleteSale();
+		}
+		
+		
+		
+		
+	}
 }

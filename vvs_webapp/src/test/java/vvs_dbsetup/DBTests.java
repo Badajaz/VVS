@@ -100,6 +100,7 @@ public class DBTests {
 		int vatCustomer =  listaCustomers.customers.get(0).vat;
 		CustomerService.INSTANCE.removeCustomer(vatCustomer);
 		List<SaleDeliveryDTO> deliverys = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
+		System.out.println(deliverys);
 		assertEquals(deliverys.size(),0);
 	}
 
@@ -131,12 +132,9 @@ public class DBTests {
 		assumeTrue(sales.size() != 0);
 		int saleId = sales.get(0).id;
 		int salesDeliverySize = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery.size();
-		System.out.println("salesDelivery "+salesDeliverySize);
 		int adress = CustomerService.INSTANCE.getAllAddresses(vatCustomer).addrs.get(0).id;
-		System.out.println("adress "+adress);
 		SaleService.INSTANCE.addSaleDelivery(saleId, adress);
 		List<SaleDeliveryDTO> salesDelivery2 = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-		System.out.println("salesDelivery2 "+salesDelivery2.size());
 		assertEquals(salesDeliverySize+1,salesDelivery2.size());
 
 

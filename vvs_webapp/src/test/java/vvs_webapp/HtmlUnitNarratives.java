@@ -43,7 +43,6 @@ public class HtmlUnitNarratives {
 		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
-
 		page = webClient.getPage(APPLICATION_URL);
 		assertEquals(200, page.getWebResponse().getStatusCode()); // OK status
 	}
