@@ -168,11 +168,9 @@ public class DBTests {
 
 		assumeTrue(sales.size() != 0);
 		List<SaleDeliveryDTO> deliveries = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-		System.out.println(deliveries.size());
 		assumeTrue(deliveries.size() != 0);
 		SaleService.INSTANCE.removeSaleByVat(vatCustomer);
 		List<SaleDeliveryDTO> deliveries2 = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-		System.out.println(deliveries2.size());
 		assertEquals(deliveries2.size(),0);
 		
 	}
