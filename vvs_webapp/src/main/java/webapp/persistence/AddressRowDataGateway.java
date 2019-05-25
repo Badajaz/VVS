@@ -30,7 +30,7 @@ public class AddressRowDataGateway{
 		this.customerVat = customerVat;
 		
 	}
-	
+
 	public AddressRowDataGateway(ResultSet rs) throws RecordNotFoundException {
 		try {
 			fillAttributes(rs.getString("address"), 

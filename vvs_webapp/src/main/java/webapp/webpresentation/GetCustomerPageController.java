@@ -31,7 +31,6 @@ public class GetCustomerPageController extends PageController {
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CustomerService cs = CustomerService.INSTANCE;        
-
 		CustomerHelper ch = new CustomerHelper();
 		request.setAttribute("helper", ch);
 		AddressesHelper ash = new AddressesHelper();
@@ -45,6 +44,7 @@ public class GetCustomerPageController extends PageController {
 			if (isInt(ch, vat, "Invalid VAT number") || isInt(ash, vat, "Invalid VAT number")) {
 				int vatNumber = intValue(vat);
 				ch.fillWithCustomer(cs.getCustomerByVat(vatNumber));
+				
 				if(address != null) {
 					cs.addAddressToCustomer(vatNumber, (address + ";" + door + ";" + postalCode + ";" + locality));
 				}

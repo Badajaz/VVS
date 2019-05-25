@@ -17,7 +17,7 @@ public class AddCustomerPageController extends PageController{
 	@Override
 	protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CustomerService cs = CustomerService.INSTANCE;
-		
+		 
 		CustomerHelper ch = new CustomerHelper();
 		request.setAttribute("helper", ch);
 		

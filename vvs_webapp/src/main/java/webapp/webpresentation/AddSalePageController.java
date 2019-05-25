@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import webapp.services.ApplicationException;
+import webapp.services.CustomerService;
 import webapp.services.SaleService;
 import webapp.services.SalesDTO;
 
@@ -19,8 +20,10 @@ public class AddSalePageController extends PageController{
 	protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		SaleService ss = SaleService.INSTANCE;
+		CustomerService cs = CustomerService.INSTANCE;
 	
 		SalesHelper sh = new SalesHelper();
+		CustomerHelper ch = new CustomerHelper();
 		request.setAttribute("salesHelper", sh);
 		
 		try{
@@ -28,6 +31,7 @@ public class AddSalePageController extends PageController{
 			
 			if (isInt(sh, vat, "Invalid VAT number")) {
 				int vatNumber = intValue(vat);
+				ch.fillWithCustomer(cs.getCustomerByVat(vatNumber));
 				ss.addSale(vatNumber);
 				SalesDTO s = ss.getSaleByCustomerVat(vatNumber);
 				sh.fillWithSales(s.sales);

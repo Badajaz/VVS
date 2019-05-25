@@ -22,4 +22,8 @@ public class AddressDTO {
 		this.customerVat = customerVat;
 		this.address = address;
 	}
+	
+	public String toString(){
+		return address;
+	}
 }

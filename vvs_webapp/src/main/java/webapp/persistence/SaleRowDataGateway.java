@@ -70,7 +70,7 @@ public class SaleRowDataGateway {
 			throw new RecordNotFoundException ("Customer does not exist", e);
 		}
 	}
-
+	
 	private void fillAttributes(Date date, int customerVat) {
 		this.data = (java.sql.Date) date;
 		this.customerVat = customerVat;

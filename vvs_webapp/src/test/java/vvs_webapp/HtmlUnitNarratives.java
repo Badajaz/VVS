@@ -27,6 +27,9 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
+import webapp.services.ApplicationException;
+import webapp.services.CustomerService;
+
 public class HtmlUnitNarratives {
 
 	private static final String APPLICATION_URL = "http://localhost:8080/VVS_webappdemo/";
@@ -47,7 +50,7 @@ public class HtmlUnitNarratives {
 		assertEquals(200, page.getWebResponse().getStatusCode()); // OK status
 	}
 	@Test
-	public void insertNewAddressForExistingCustomer() {
+	public void insertNewAddressForExistingCustomer() throws ApplicationException {
 
 		int adressCount=0;
 
@@ -60,10 +63,12 @@ public class HtmlUnitNarratives {
 			e.printStackTrace();
 			System.err.println("link para a pagina errada");
 		}
+
+		
 		String[] customerInfo = getFirstCustomerInfo();
 		String nome = customerInfo[0];
 		String vat = customerInfo[2];
-
+		
 		assertEquals("Enter Name", customerByVATPage.getTitleText());
 		HtmlForm customerByVATForm = customerByVATPage.getForms().get(0);
 		HtmlInput vatInput = customerByVATForm.getInputByName("vat");
@@ -75,7 +80,7 @@ public class HtmlUnitNarratives {
 		HtmlPage reportPage = null;
 		java.net.URL url = null;
 		try {
-			url = new java.net.URL(APPLICATION_URL+"GetCustomerPageController");
+			url = new java.net.URL(APPLICATION_URL + "GetCustomerPageController");
 		} catch (MalformedURLException e) {
 			System.err.println("Pagina inexistente " + e.getMessage());
 		}
@@ -166,6 +171,7 @@ public class HtmlUnitNarratives {
 		}
 		assertEquals(adressCount2, adressCount+1);
 	}
+
 	@Test
 	public void InsertExistingCustomerAndCheckIfReturnsError() {
 
@@ -261,7 +267,7 @@ public class HtmlUnitNarratives {
 
 		HtmlInput phoneInput = addCustomerForm.getInputByName("phone");
 		phoneInput.setValueAttribute(phoneNewCustomer);
-		
+
 		String textReportPage = addCustomerPage.asText();
 		assertTrue(textReportPage.contains(vatNewCustomer));
 		assertTrue(textReportPage.contains(designationNewCustomer));
@@ -339,7 +345,7 @@ public class HtmlUnitNarratives {
 			assertFalse(listAllCustomersPage.asXml().contains(vatNewCustomer));
 		}
 	}
-	
+
 	@Test
 	public void NewSaleForExistingCustomerWithDelivery() {
 		assertEquals("WebAppDemo Menu", page.getTitleText());
@@ -349,7 +355,7 @@ public class HtmlUnitNarratives {
 		String nome = firstCustomerInfo[1];
 
 		//Passo 1 - Obter numero de sales
-		
+
 		HtmlAnchor salesListLink = page.getAnchorByHref("getSales.html");
 		HtmlPage salesListPage = null;
 		try {
@@ -364,7 +370,7 @@ public class HtmlUnitNarratives {
 
 		String salesListPageText = salesListPage.asText();
 		assertTrue(salesListPageText.contains(vat));
-		
+
 		HtmlPage saleInfoPage = null;
 		java.net.URL url = null;
 		try {
@@ -375,7 +381,7 @@ public class HtmlUnitNarratives {
 		WebRequest requestSettings = new WebRequest(url,HttpMethod.GET);
 		requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
 		requestSettings.getRequestParameters().add(new NameValuePair("customerVat", vat));
-		
+
 		try {
 			saleInfoPage = webClient.getPage(requestSettings);
 		} catch (FailingHttpStatusCodeException e) {
@@ -391,7 +397,7 @@ public class HtmlUnitNarratives {
 			List<HtmlElement> items = saleInfoPage.getByXPath("//tr");
 			numeroSalesAntes = items.size()-1;
 		} 
-		
+
 		//Passo 2 - Adicionar uma nova sale
 
 		HtmlAnchor newSaleLink = page.getAnchorByHref("addSale.html");
@@ -416,7 +422,7 @@ public class HtmlUnitNarratives {
 		requestSettings = new WebRequest(url,HttpMethod.GET);
 		requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
 		requestSettings.getRequestParameters().add(new NameValuePair("customerVat", vat));
-		
+
 		try {
 			newSalePage = webClient.getPage(requestSettings);
 		} catch (FailingHttpStatusCodeException e) {
@@ -429,9 +435,9 @@ public class HtmlUnitNarratives {
 		assertTrue(newSalePage.asXml().contains("<table"));
 		List<HtmlElement>items = newSalePage.getByXPath("//tr");
 		assertTrue(numeroSalesAntes+1==items.size()-1);
-		
+
 		//Passo 3 - Verificar se o utilizador tem um address
-		
+
 		HtmlAnchor clientInfoLink = page.getAnchorByHref("getCustomerByVAT.html");
 		HtmlPage clientInfoPage = null;
 		try {
@@ -445,7 +451,7 @@ public class HtmlUnitNarratives {
 		vatInputClientInfo.setValueAttribute(vat);
 		String clientInfoPageText = clientInfoPage.asText();
 		assertTrue(clientInfoPageText.contains(vat));
-		
+
 		try {
 			url = new java.net.URL(APPLICATION_URL+"GetCustomerPageController");
 		} catch (MalformedURLException e) {
@@ -454,7 +460,7 @@ public class HtmlUnitNarratives {
 		requestSettings = new WebRequest(url,HttpMethod.GET);
 		requestSettings.setRequestParameters(new ArrayList<NameValuePair>());
 		requestSettings.getRequestParameters().add(new NameValuePair("vat", vat));
-		
+
 		try {
 			clientInfoPage = webClient.getPage(requestSettings);
 		} catch (FailingHttpStatusCodeException e) {
@@ -464,9 +470,9 @@ public class HtmlUnitNarratives {
 		}
 		assertEquals(200, clientInfoPage.getWebResponse().getStatusCode());		
 		assertEquals("Customer Info", clientInfoPage.getTitleText());
-		
+
 		//Passo 4 - Adicionar um novo address se o cliente nao o tiver
-		
+
 		if(!newSalePage.asXml().contains("<table")){
 			HtmlAnchor addAddressToCustomer  = page.getAnchorByHref("addAddressToCustomer.html");
 			HtmlPage addAddressToCustomerPage = null;
@@ -527,9 +533,9 @@ public class HtmlUnitNarratives {
 			assertEquals(200, report.getWebResponse().getStatusCode());
 			assertTrue(report.asXml().contains(nome));
 		}
-		
+
 		//Passo 5 - Adicionar o delivery
-		
+
 		HtmlAnchor saleDeliveryLink = page.getAnchorByHref("saleDeliveryVat.html");
 		HtmlPage saleDeliveryPage = null;
 		try {
@@ -537,7 +543,7 @@ public class HtmlUnitNarratives {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
+
 		assertEquals(200, saleDeliveryPage.getWebResponse().getStatusCode());
 		assertEquals("Enter Name", saleDeliveryPage.getTitleText());
 		HtmlForm saleDeliveryForm = saleDeliveryPage.getForms().get(0);
@@ -571,18 +577,18 @@ public class HtmlUnitNarratives {
 		HtmlForm deliveryPageForm = deliveryPage.getForms().get(0);
 
 		assertTrue(deliveryPage.asXml().contains("<table"));
-		
+
 		String idAddr = deliveryPage.getByXPath("//tr[2]/td[1]/text()").get(0).toString();
 		String idSale = ((HtmlTable) deliveryPage.getByXPath("//table").get(1)).getRow(1).getCell(0).asText();
 		HtmlInput addrID = deliveryPageForm.getInputByName("addr_id");
 		addrID.setValueAttribute(idAddr);
 		HtmlInput saleID = deliveryPageForm.getInputByName("sale_id");
 		saleID.setValueAttribute(idSale);
-		
+
 		deliveryPageText =  deliveryPage.asText();
 		assertTrue(deliveryPageText.contains(idAddr));
 		assertTrue(deliveryPageText.contains(idSale));
-		
+
 		HtmlPage report = null;
 		try {
 			url = new java.net.URL(APPLICATION_URL+"AddSaleDeliveryPageController");
@@ -602,14 +608,14 @@ public class HtmlUnitNarratives {
 		}
 		assertEquals(200, report.getWebResponse().getStatusCode());
 		assertEquals(report.getTitleText(),"Sales Info");
-		
+
 		assertTrue(deliveryPage.asXml().contains("<table"));
 		String reportPageText = report.asText();
 		assertTrue(reportPageText.contains(idAddr));
 		assertTrue(reportPageText.contains(idSale));
-		
+
 		// Passo 6 - Verificar a sale delivery
-		
+
 		HtmlAnchor checkSaleDeliveryLink = page.getAnchorByHref("showDelivery.html");
 		HtmlPage checkSaleDeliveryPage = null;
 		try {
@@ -624,7 +630,7 @@ public class HtmlUnitNarratives {
 
 		String checkSaleDeliveryPageText = checkSaleDeliveryPage.asText();
 		assertTrue(checkSaleDeliveryPageText.contains(vat));
-		
+
 		HtmlPage getSaleDeliveryPage = null;
 		try {
 			url = new java.net.URL(APPLICATION_URL+"GetSaleDeliveryPageController");
@@ -643,16 +649,17 @@ public class HtmlUnitNarratives {
 		}
 		assertEquals(200, getSaleDeliveryPage.getWebResponse().getStatusCode());
 		assertEquals(getSaleDeliveryPage.getTitleText(),"Sales Info");
-		
+
 		assertTrue(deliveryPage.asXml().contains("<table"));
 		String getSaleDeliveryPageText = report.asText();
 		assertTrue(getSaleDeliveryPageText.contains(idAddr));
 		assertTrue(getSaleDeliveryPageText.contains(idSale));
-		
+
 	}
 	// @return 0 - nome, 1 - phone, 2 - vat
 
 	private String [] getFirstCustomerInfo() {
+
 		HtmlAnchor listAllCustomersLink	 = page.getAnchorByHref("GetAllCustomersPageController");
 		HtmlPage listAllCustomersPage = null;
 		try {
@@ -668,4 +675,5 @@ public class HtmlUnitNarratives {
 		firstCustomerInfo [2] = listAllCustomersPage.getByXPath("//tr[2]/td[3]/text()").get(0).toString();
 		return firstCustomerInfo;
 	}
+
 }

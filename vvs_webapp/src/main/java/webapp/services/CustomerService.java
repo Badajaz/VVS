@@ -7,8 +7,6 @@ import webapp.persistence.AddressRowDataGateway;
 import webapp.persistence.CustomerFinder;
 import webapp.persistence.CustomerRowDataGateway;
 import webapp.persistence.PersistenceException;
-import webapp.persistence.SaleDeliveryRowDataGateway;
-import webapp.persistence.SaleRowDataGateway;
 
 
 /**
@@ -64,13 +62,31 @@ public enum CustomerService {
 	public void addAddressToCustomer(int customerVat, String addr) throws ApplicationException {
 		if (!isValidVAT (customerVat))
 			throw new ApplicationException ("Invalid VAT number: " + customerVat);
+		
+		else if(alreadyHasAddress(customerVat, addr)) {
+			throw new ApplicationException ("Duplicate address: " + addr);
+		}	
 		else try {
+		
 			AddressRowDataGateway address = new AddressRowDataGateway(addr, customerVat);
 			address.insert();
 
 		} catch (PersistenceException e) {
 			throw new ApplicationException ("Can't add the address /n" + addr + "/nTo customer with vat number " + customerVat + ".", e);
 		}
+	}
+
+	private boolean alreadyHasAddress(int customerVat,String addr) throws ApplicationException {
+		List<AddressDTO> allAddresses = getAllAddresses(customerVat).addrs;
+		int i = 0;
+		boolean found = false; 
+		while(!found && i < allAddresses.size()) {
+				System.out.println("ADDR IN: " +allAddresses.get(i).toString().trim() + " ADDR INTRO: " + addr);
+				found = allAddresses.get(i).toString().trim().equals(addr);
+				i++;
+		}
+			
+		return found;
 	}
 
 	public AddressesDTO getAllAddresses(int customerVat) throws ApplicationException {
