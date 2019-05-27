@@ -101,7 +101,6 @@ public class DBTests {
 		int vatCustomer =  listaCustomers.customers.get(0).vat;
 		CustomerService.INSTANCE.removeCustomer(vatCustomer);
 		List<SaleDeliveryDTO> deliverys = SaleService.INSTANCE.getSalesDeliveryByVat(vatCustomer).sales_delivery;
-		System.out.println(deliverys);
 		assertEquals(deliverys.size(),0);
 	}
 
